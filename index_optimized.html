@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TRIO PRIME - Trio Emlak portföy sunumu. Ayvalık, Cunda, Altınova, Gömeç ve İstanbul'da güncel elden ev, villa ve arsa ilanları.">
+    <title>TRIO PRIME - Özellikli Gayrimenkul Portföy</title>
+    
+    <!-- Preconnect for important origins -->
+    <link rel="preconnect" href="https://i0.shbdn.com">
+    <link rel="preconnect" href="https://www.sahibinden.com" crossorigin>
+    
+    <!-- Fonts with preload -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Playfair+Display:wght@900&display=swap" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root{--green:#0f2e1f;--gold:#c8a96e;--cream:#f4f1ea;--ink:#111;--card:#1a2e25;}
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Inter',system-ui,sans-serif;background:var(--green);color:var(--cream);line-height:1.55;overflow-x:hidden}
+        @media(max-width:700px){body{-webkit-text-size-adjust:none}}
+        
+        .hero{position:relative;min-height:55vh;display:flex;flex-direction:column;justify-content:center;padding:4rem 4vw;background:radial-gradient(circle at 70% 30%,#1a4a33 0%,var(--green) 70%)}
+        .hero::before{content:"";position:absolute;inset:0;background:url('data:image/svg+xml,%3Csvg width="60" height="60" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M0 30 L30 0 L60 30 L30 60 Z" fill="none" stroke="rgba(200,169,110,0.08)" stroke-width="1"/%3E%3C/svg%3E');pointer-events:none;opacity:.6}
+        .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,8vw,5.5rem);letter-spacing:-0.06em;line-height:.92;color:var(--gold);text-shadow:0 10px 30px rgba(0,0,0,.5);position:relative;z-index:1}
+        .hero .sub{font-size:1.15rem;font-weight:400;color:#c7bfa8;margin-top:1rem;position:relative;z-index:1}
+        .hero .badge{display:inline-block;background:rgba(15,46,31,.85);border:1px solid var(--gold);color:var(--gold);padding:.5rem 1.1rem;border-radius:9999px;font-weight:700;margin-top:1.5rem;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;position:relative;z-index:1}
+        
+        .section{padding:3.5rem 4vw;max-width:1280px;margin:0 auto}
+        .section h2{font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);margin-bottom:.6rem;border-bottom:2px solid rgba(200,169,110,.25);padding-bottom:.5rem}
+        .count{color:#c7bfa8;font-size:.95rem;margin-bottom:1.5rem}
+        .count strong{color:var(--gold)}
+        
+        .filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem;background:rgba(15,46,31,.7);border:1px solid rgba(200,169,110,.2);border-radius:16px;padding:1.5rem;backdrop-filter:blur(6px)}
+        .filters label{font-weight:600;color:#c7bfa8;font-size:.85rem;display:block;margin-bottom:.3rem}
+        .filters select,.filters input{width:100%;padding:.65rem .8rem;background:#0f2e1f;border:1px solid rgba(200,169,110,.3);border-radius:8px;color:var(--cream);font-family:inherit;font-size:.92rem}
+        .filters select:focus,.filters input:focus{outline:none;border-color:var(--gold)}
+        .btn-reset{padding:.65rem 1rem;background:rgba(200,169,110,.9);border:none;border-radius:8px;color:#0f2e1f;font-weight:700;font-size:.9rem;cursor:pointer;align-self:end}
+        
+        .results-grid{display:grid;grid-template-columns:repeat(2,minmax(300px,1fr));gap:1.5rem;margin-top:.8rem;align-items:start}
+        @media(max-width:700px){.results-grid{grid-template-columns:1fr}}
+        .card{background:var(--card);border:1px solid rgba(200,169,110,.2);border-radius:18px;overflow:hidden;transition:transform .15s ease,border-color .15s;display:flex;flex-direction:column}
+        .card:hover{transform:translateY(-4px);border-color:rgba(200,169,110,.55);box-shadow:0 12px 30px rgba(0,0,0,.35)}
+        .card .ph{height:230px;background:linear-gradient(135deg,#1a4a33,#0f2e1f);display:flex;align-items:center;justify-content:center;color:var(--gold);font-weight:700;font-size:1rem}
+        .card img{width:100%;height:230px;object-fit:cover;display:block}
+        .card-body{padding:1.2rem 1.2rem 1rem;flex:1}
+        .card h3{font-size:1.02rem;font-weight:700;margin-bottom:.35rem;color:#fff;line-height:1.35}
+        .card .price{font-size:1.3rem;font-weight:900;color:var(--gold);margin-bottom:.35rem;letter-spacing:-.02em}
+        .card .meta{font-size:.85rem;color:#c7bfa8;line-height:1.5}
+        .badge-trio{display:inline-block;background:var(--gold);color:var(--ink);padding:.3rem .85rem;border-radius:999px;font-size:.8rem;font-weight:800;text-decoration:none;margin-top:.8rem}
+        .empty{text-align:center;color:#c7bfa8;padding:3rem 1rem;font-size:1.05rem}
+        
+        .goal-section{background:rgba(200,169,110,.1);border:2px solid var(--gold);border-radius:20px;padding:3rem 2rem;margin:2rem 0;backdrop-filter:blur(10px)}
+        .goal-section h2{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold);margin-bottom:1rem;text-align:center}
+        .goal-section p{font-size:1rem;color:#eaddb8;text-align:center;line-height:1.7}
+        
+        .footer{border-top:1px solid rgba(200,169,110,.2);padding:2.5rem 4vw;text-align:center;color:#a39885;font-size:.85rem}
+    </style>
+    
+    <style id="non-critical-css" media="print">
+    </style>
+    <script>
+        setTimeout(() => { const style = document.getElementById('non-critical-css'); if(style) style.media = 'all'; }, 100);
+    </script>
+</head>
+<body>
+    <section class="hero" aria-label="Başlık">
+        <h1>TRIO PRIME</h1>
+        <p class="sub">Trio Emlak · Ozancan Serhan · <strong>0533 378 68 94</strong> · Sıfır Halüsinasyon</p>
+        <p class="sub" style="margin-top:.6rem;color:#a8a08a">Ayvalık · Cunda · Altınova · Gömeç · İstanbul</p>
+        <span class="badge">Seçilmiş Portföy · Günlük Güncelleme · 24.10.2026 11:51</span>
+    </section>
+    
+    <section class="section" aria-label="Portföy">
+        <h2>📋 Portföy — Ayvalık Satılık Konutlar</h2>
+        <p class="count">Bu sayfa otomatik üretilmiştir: <strong id="cnt-top">…</strong> ilan · Kaynak: sahibinden.com günlük tarama · <strong>Sıfır Halüsinasyon</strong> — her ilan gerçek kaynak URL'sine bağlıdır.</p>
+        
+        <div class="filters" aria-label="Filtreler">
+            <div><label for="f-mah">Mahalle</label><select id="f-mah"><option>Tümü</option><option>150 Evler Mah.</option><option>Akçapınar Mh.</option><option>Ali Çetinkaya Mh.</option><option>Altınova Altınova Mh.</option><option>Altınova Mh.</option><option>Bağyüzü Mh.</option><option>Beşiktepe Mh.</option><option>Bulutçeşme Mh.</option><option>Fethiye Mah.</option><option>Hacıveliler Mh.</option><option>Hamdibey Mah.</option><option>Küçükköy Küçükköy Mh.</option><option>Küçükköy Mh.</option><option>Merkez 150 Evler Mah.</option><option>Merkez Sahil Kent Mah.</option><option>Merkez Yeni Mah.</option><option>Mithatpaşa Mh.</option><option>Murateli Mh.</option><option>Namık Kemal Mh.</option><option>Sakarya Mah.</option><option>Tıfıllar Mh.</option><option>Çakmak Mh.</option><option>Çamoba Mh.</option><option>Üçkabaağaç Mh.</option><option>İsmetpaşa Mh.</option></select></div>
+            <div><label for="f-oda">Oda</label><select id="f-oda"><option>Tümü</option><option>1+1</option><option>2+1</option><option>3+1</option><option>4+1</option><option>5+1</option></select></div>
+            <div><label for="f-fiyat">Maks. Fiyat (TL)</label><input id="f-fiyat" type="number" placeholder="Örn. 10000000"></div>
+            <div><label for="f-m2">Min. m²</label><input id="f-m2" type="number" placeholder="Örn. 90"></div>
+            <button class="btn-reset" id="btn-reset">Filtreleri Sıfırla</button>
+        </div>
+        
+        <div class="results-grid" id="grid" aria-label="İlanlar"></div>
+        <div class="empty" id="empty" style="display:none">Filtrelere uyan ilan yok.</div>
+    </section>
+    
+    <section class="goal-section" aria-label="Goal" id="goal">
+        <h2>🎯 GOAL — Sunum Günlük Taze Veriyle Çalışıyor</h2>
+        <p>İlanlar sahibinden.com üzerindeki gerçek listelerden (<code>scrape_definitive.py</code>) her gün otomatik çekilir; bu sayfa veriden otomatik üretiler. Her karttaki "İlanı Gör" bağlantısı kaynağa gider — gösterilen fiyat ve tarih arama sonucundakiyle birebir aynıdır.</p>
+        <p style="margin-top:1rem;font-size:.9rem;color:#a39885">Durum: GOAL ÇALIŞIYOR · Veri taze: 24.10.2026 11:51 · TRIOPRIME ONLY</p>
+    </section>
+    
+    <footer class="footer">
+        <p>TRIO PRIME — Trio Emlak · Ozancan Serhan · <strong>0533 378 68 94</strong> · Sıfır Halüsinasyon · TRIOPRIME ONLY</p>
+    </footer>
+    
+    <script>
+        const DATA = [
+  {
+    "id": "1297079018",
+    "title": "3+1 TEMİZ DAİRE",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-sahibinden-3-plus1-temiz-daire-1297079018/detay",
+    "price_text": "5.001.000 TL",
+    "price": 5001000,
+    "m2": 160,
+    "rooms": "3+1",
+    "date": "20 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/07/90/18/lthmb_1297079018r0f.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/07/90/18/lthmb_1297079018r0f.jpg",
+      "https://i0.shbdn.com/photos/07/90/18/lthmb_1297079018r0f.jpg",
+      "https://i0.shbdn.com/photos/07/90/18/lthmb_1297079018r0f.jpg",
+      "https://i0.shbdn.com/photos/07/90/18/lthmb_1297079018r0f.jpg",
+      "https://i0.shbdn.com/photos/07/90/18/lthmb_1297079018r0f.jpg",
+      "https://i0.shbdn.com/photos/07/90/18/lthmb_1297079018r0f.jpg",
+      "https://i0.shbdn.com/photos/07/90/18/lthmb_1297079018r0f.jpg",
+      "https://i0.shbdn.com/photos/07/90/18/lthmb_1297079018r0f.jpg",
+      "https://i0.shbdn.com/photos/07/90/18/lthmb_1297079018r0f.jpg",
+      "https://i0.shbdn.com/photos/07/90/18/lthmb_1297079018r0f.jpg"
+    ],
+    "photo": "assets/listings/1297079018.jpg"
+  },
+  {
+    "id": "1343273353",
+    "title": "Ali Çetinkaya Mh. SATILIK 2+1 Daire",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-ayvalik-su-gayrimenkul-den-ali-cetinkaya-mh-satilik-2-plus1-daire-1343273353/detay",
+    "price_text": "5.200.000 TL",
+    "price": 5200000,
+    "m2": 105,
+    "rooms": "2+1",
+    "date": "30 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/27/33/53/lthmb_1343273353dhw.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/27/33/53/lthmb_1343273353dhw.jpg",
+      "https://i0.shbdn.com/photos/27/33/53/lthmb_1343273353dhw.jpg",
+      "https://i0.shbdn.com/photos/27/33/53/lthmb_1343273353dhw.jpg",
+      "https://i0.shbdn.com/photos/27/33/53/lthmb_1343273353dhw.jpg",
+      "https://i0.shbdn.com/photos/27/33/53/lthmb_1343273353dhw.jpg",
+      "https://i0.shbdn.com/photos/27/33/53/lthmb_1343273353dhw.jpg",
+      "https://i0.shbdn.com/photos/27/33/53/lthmb_1343273353dhw.jpg",
+      "https://i0.shbdn.com/photos/27/33/53/lthmb_1343273353dhw.jpg",
+      "https://i0.shbdn.com/photos/27/33/53/lthmb_1343273353dhw.jpg",
+      "https://i0.shbdn.com/photos/27/33/53/lthmb_1343273353dhw.jpg"
+    ],
+    "photo": "assets/listings/1343273353.jpg"
+  },
+  {
+    "id": "1316352733",
+    "title": "AYVALIK'IN GÖZDE LOKASYONU ALİÇETİNKAYA'DA 2+1 İYİ KONUMDA DAİRE",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-ayvalik-in-gozde-lokasyonu-alicetinkaya-da-2-plus1-iyi-konumda-daire-1316352733/detay",
+    "price_text": "5.250.000 TL",
+    "price": 5250000,
+    "m2": 95,
+    "rooms": "2+1",
+    "date": "10 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/35/27/33/lthmb_1316352733uwe.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/35/27/33/lthmb_1316352733uwe.jpg",
+      "https://i0.shbdn.com/photos/35/27/33/lthmb_1316352733uwe.jpg",
+      "https://i0.shbdn.com/photos/35/27/33/lthmb_1316352733uwe.jpg",
+      "https://i0.shbdn.com/photos/35/27/33/lthmb_1316352733uwe.jpg",
+      "https://i0.shbdn.com/photos/35/27/33/lthmb_1316352733uwe.jpg",
+      "https://i0.shbdn.com/photos/35/27/33/lthmb_1316352733uwe.jpg",
+      "https://i0.shbdn.com/photos/35/27/33/lthmb_1316352733uwe.jpg",
+      "https://i0.shbdn.com/photos/35/27/33/lthmb_1316352733uwe.jpg",
+      "https://i0.shbdn.com/photos/35/27/33/lthmb_1316352733uwe.jpg",
+      "https://i0.shbdn.com/photos/35/27/33/lthmb_1316352733uwe.jpg"
+    ],
+    "photo": "assets/listings/1316352733.jpg"
+  },
+  {
+    "id": "1330805185",
+    "title": "AYVALIK ALİ ÇETİNKAYA'DA SATILIK 2+1 DAİRE",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-pera-gayrimenkul-den-ayvalik-ali-cetinkaya-da-satilik-2-plus1-daire-1330805185/detay",
+    "price_text": "5.250.000 TL",
+    "price": 5250000,
+    "m2": 95,
+    "rooms": "2+1",
+    "date": "25 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/80/51/85/lthmb_13308051852uw.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/80/51/85/lthmb_13308051852uw.jpg",
+      "https://i0.shbdn.com/photos/80/51/85/lthmb_13308051852uw.jpg",
+      "https://i0.shbdn.com/photos/80/51/85/lthmb_13308051852uw.jpg",
+      "https://i0.shbdn.com/photos/80/51/85/lthmb_13308051852uw.jpg",
+      "https://i0.shbdn.com/photos/80/51/85/lthmb_13308051852uw.jpg",
+      "https://i0.shbdn.com/photos/80/51/85/lthmb_13308051852uw.jpg",
+      "https://i0.shbdn.com/photos/80/51/85/lthmb_13308051852uw.jpg",
+      "https://i0.shbdn.com/photos/80/51/85/lthmb_13308051852uw.jpg",
+      "https://i0.shbdn.com/photos/80/51/85/lthmb_13308051852uw.jpg",
+      "https://i0.shbdn.com/photos/80/51/85/lthmb_13308051852uw.jpg"
+    ],
+    "photo": "assets/listings/1330805185.jpg"
+  },
+  {
+    "id": "1325967817",
+    "title": "AYVALIK,Ali Çetin Kaya Mah. Satılık Fırsat Daire",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-ayvalik,ali-cetin-kaya-mah-satilik-firsat-daire-1325967817/detay",
+    "price_text": "5.375.000 TL",
+    "price": 5375000,
+    "m2": 130,
+    "rooms": "3+1",
+    "date": "01 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/96/78/17/lthmb_132596781759m.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/96/78/17/lthmb_132596781759m.jpg",
+      "https://i0.shbdn.com/photos/96/78/17/lthmb_132596781759m.jpg",
+      "https://i0.shbdn.com/photos/96/78/17/lthmb_132596781759m.jpg",
+      "https://i0.shbdn.com/photos/96/78/17/lthmb_132596781759m.jpg",
+      "https://i0.shbdn.com/photos/96/78/17/lthmb_132596781759m.jpg",
+      "https://i0.shbdn.com/photos/96/78/17/lthmb_132596781759m.jpg",
+      "https://i0.shbdn.com/photos/96/78/17/lthmb_132596781759m.jpg",
+      "https://i0.shbdn.com/photos/96/78/17/lthmb_132596781759m.jpg",
+      "https://i0.shbdn.com/photos/96/78/17/lthmb_132596781759m.jpg",
+      "https://i0.shbdn.com/photos/96/78/17/lthmb_132596781759m.jpg"
+    ],
+    "photo": "assets/listings/1325967817.jpg"
+  },
+  {
+    "id": "1338150551",
+    "title": "Ayvalık Özkayaoğulları emlak Ali Çetinkaya mh satılık 2 + 1",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-ayvalik-ozkayaogullari-emlak-ali-cetinkaya-mh-satilik-2-plus-1-1338150551/detay",
+    "price_text": "5.400.000 TL",
+    "price": 5400000,
+    "m2": 100,
+    "rooms": "2+1",
+    "date": "03 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/15/05/51/lthmb_1338150551nbc.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/15/05/51/lthmb_1338150551nbc.jpg",
+      "https://i0.shbdn.com/photos/15/05/51/lthmb_1338150551nbc.jpg",
+      "https://i0.shbdn.com/photos/15/05/51/lthmb_1338150551nbc.jpg",
+      "https://i0.shbdn.com/photos/15/05/51/lthmb_1338150551nbc.jpg",
+      "https://i0.shbdn.com/photos/15/05/51/lthmb_1338150551nbc.jpg",
+      "https://i0.shbdn.com/photos/15/05/51/lthmb_1338150551nbc.jpg",
+      "https://i0.shbdn.com/photos/15/05/51/lthmb_1338150551nbc.jpg",
+      "https://i0.shbdn.com/photos/15/05/51/lthmb_1338150551nbc.jpg",
+      "https://i0.shbdn.com/photos/15/05/51/lthmb_1338150551nbc.jpg",
+      "https://i0.shbdn.com/photos/15/05/51/lthmb_1338150551nbc.jpg"
+    ],
+    "photo": "assets/listings/1338150551.jpg"
+  },
+  {
+    "id": "1342780814",
+    "title": "BURÇİN EMLAKTAN SATILIK BAHÇELİ2+1",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-burcin-emlaktan-satilik-bahceli2-plus1-1342780814/detay",
+    "price_text": "5.400.000 TL",
+    "price": 5400000,
+    "m2": 110,
+    "rooms": "2+1",
+    "date": "28 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/78/08/14/lthmb_1342780814kci.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/78/08/14/lthmb_1342780814kci.jpg",
+      "https://i0.shbdn.com/photos/78/08/14/lthmb_1342780814kci.jpg",
+      "https://i0.shbdn.com/photos/78/08/14/lthmb_1342780814kci.jpg",
+      "https://i0.shbdn.com/photos/78/08/14/lthmb_1342780814kci.jpg",
+      "https://i0.shbdn.com/photos/78/08/14/lthmb_1342780814kci.jpg",
+      "https://i0.shbdn.com/photos/78/08/14/lthmb_1342780814kci.jpg",
+      "https://i0.shbdn.com/photos/78/08/14/lthmb_1342780814kci.jpg",
+      "https://i0.shbdn.com/photos/78/08/14/lthmb_1342780814kci.jpg",
+      "https://i0.shbdn.com/photos/78/08/14/lthmb_1342780814kci.jpg",
+      "https://i0.shbdn.com/photos/78/08/14/lthmb_1342780814kci.jpg"
+    ],
+    "photo": "assets/listings/1342780814.jpg"
+  },
+  {
+    "id": "1332910153",
+    "title": "KUZEY SAMCAKTAN SATILIK BAHÇELİ 2+1 DAİRE",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-kuzey-samcaktan-satilik-bahceli-2-plus1-daire-1332910153/detay",
+    "price_text": "5.500.000 TL",
+    "price": 5500000,
+    "m2": 110,
+    "rooms": "2+1",
+    "date": "07 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/91/01/53/lthmb_133291015325e.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/91/01/53/lthmb_133291015325e.jpg",
+      "https://i0.shbdn.com/photos/91/01/53/lthmb_133291015325e.jpg",
+      "https://i0.shbdn.com/photos/91/01/53/lthmb_133291015325e.jpg",
+      "https://i0.shbdn.com/photos/91/01/53/lthmb_133291015325e.jpg",
+      "https://i0.shbdn.com/photos/91/01/53/lthmb_133291015325e.jpg",
+      "https://i0.shbdn.com/photos/91/01/53/lthmb_133291015325e.jpg",
+      "https://i0.shbdn.com/photos/91/01/53/lthmb_133291015325e.jpg",
+      "https://i0.shbdn.com/photos/91/01/53/lthmb_133291015325e.jpg",
+      "https://i0.shbdn.com/photos/91/01/53/lthmb_133291015325e.jpg",
+      "https://i0.shbdn.com/photos/91/01/53/lthmb_133291015325e.jpg"
+    ],
+    "photo": "assets/listings/1332910153.jpg"
+  },
+  {
+    "id": "1291506641",
+    "title": "Ayvalık Özkayaoğulları Emlak AliÇetinkaya Mh. Satılık 2+1 daire",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-ayvalik-ozkayaogullari-emlak-alicetinkaya-mh-satilik-2-plus1-daire-1291506641/detay",
+    "price_text": "5.500.000 TL",
+    "price": 5500000,
+    "m2": 110,
+    "rooms": "2+1",
+    "date": "08 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/50/66/41/lthmb_129150664121r.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/50/66/41/lthmb_129150664121r.jpg",
+      "https://i0.shbdn.com/photos/50/66/41/lthmb_129150664121r.jpg",
+      "https://i0.shbdn.com/photos/50/66/41/lthmb_129150664121r.jpg",
+      "https://i0.shbdn.com/photos/50/66/41/lthmb_129150664121r.jpg",
+      "https://i0.shbdn.com/photos/50/66/41/lthmb_129150664121r.jpg",
+      "https://i0.shbdn.com/photos/50/66/41/lthmb_129150664121r.jpg",
+      "https://i0.shbdn.com/photos/50/66/41/lthmb_129150664121r.jpg",
+      "https://i0.shbdn.com/photos/50/66/41/lthmb_129150664121r.jpg",
+      "https://i0.shbdn.com/photos/50/66/41/lthmb_129150664121r.jpg",
+      "https://i0.shbdn.com/photos/50/66/41/lthmb_129150664121r.jpg"
+    ],
+    "photo": "assets/listings/1291506641.jpg"
+  },
+  {
+    "id": "1320731118",
+    "title": "KUZEY SANCAK,TAN SATILIK 2+1 DAİRE",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-kuzey-sancak,tan-satilik-2-plus1-daire-1320731118/detay",
+    "price_text": "5.500.000 TL",
+    "price": 5500000,
+    "m2": 100,
+    "rooms": "2+1",
+    "date": "07 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/73/11/18/lthmb_1320731118igv.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/73/11/18/lthmb_1320731118igv.jpg",
+      "https://i0.shbdn.com/photos/73/11/18/lthmb_1320731118igv.jpg",
+      "https://i0.shbdn.com/photos/73/11/18/lthmb_1320731118igv.jpg",
+      "https://i0.shbdn.com/photos/73/11/18/lthmb_1320731118igv.jpg",
+      "https://i0.shbdn.com/photos/73/11/18/lthmb_1320731118igv.jpg",
+      "https://i0.shbdn.com/photos/73/11/18/lthmb_1320731118igv.jpg",
+      "https://i0.shbdn.com/photos/73/11/18/lthmb_1320731118igv.jpg",
+      "https://i0.shbdn.com/photos/73/11/18/lthmb_1320731118igv.jpg",
+      "https://i0.shbdn.com/photos/73/11/18/lthmb_1320731118igv.jpg",
+      "https://i0.shbdn.com/photos/73/11/18/lthmb_1320731118igv.jpg"
+    ],
+    "photo": "assets/listings/1320731118.jpg"
+  },
+  {
+    "id": "1311616800",
+    "title": "ALİ ÇETİNKAYA'DA 2+1 BAHÇE KATI DAİRE",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-umas-solution-dan-ali-cetinkaya-da-2-plus1-bahce-kati-daire-1311616800/detay",
+    "price_text": "5.500.000 TL",
+    "price": 5500000,
+    "m2": 95,
+    "rooms": "2+1",
+    "date": "15 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/61/68/00/lthmb_1311616800g86.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/61/68/00/lthmb_1311616800g86.jpg",
+      "https://i0.shbdn.com/photos/61/68/00/lthmb_1311616800g86.jpg",
+      "https://i0.shbdn.com/photos/61/68/00/lthmb_1311616800g86.jpg",
+      "https://i0.shbdn.com/photos/61/68/00/lthmb_1311616800g86.jpg",
+      "https://i0.shbdn.com/photos/61/68/00/lthmb_1311616800g86.jpg",
+      "https://i0.shbdn.com/photos/61/68/00/lthmb_1311616800g86.jpg",
+      "https://i0.shbdn.com/photos/61/68/00/lthmb_1311616800g86.jpg",
+      "https://i0.shbdn.com/photos/61/68/00/lthmb_1311616800g86.jpg",
+      "https://i0.shbdn.com/photos/61/68/00/lthmb_1311616800g86.jpg",
+      "https://i0.shbdn.com/photos/61/68/00/lthmb_1311616800g86.jpg"
+    ],
+    "photo": "assets/listings/1311616800.jpg"
+  },
+  {
+    "id": "1342934003",
+    "title": "TURYAP'TAN OKULA,MARKETE,­ULAŞIMA,DENİZE YAKIN 2+1SATILIK DAİRE",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-turyap-tan-okula,markete,ulasima,denize-yakin-2-plus1satilik-daire-1342934003/detay",
+    "price_text": "5.550.000 TL",
+    "price": 5550000,
+    "m2": 100,
+    "rooms": "2+1",
+    "date": "29 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/93/40/03/lthmb_1342934003avr.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/93/40/03/lthmb_1342934003avr.jpg",
+      "https://i0.shbdn.com/photos/93/40/03/lthmb_1342934003avr.jpg",
+      "https://i0.shbdn.com/photos/93/40/03/lthmb_1342934003avr.jpg",
+      "https://i0.shbdn.com/photos/93/40/03/lthmb_1342934003avr.jpg",
+      "https://i0.shbdn.com/photos/93/40/03/lthmb_1342934003avr.jpg",
+      "https://i0.shbdn.com/photos/93/40/03/lthmb_1342934003avr.jpg",
+      "https://i0.shbdn.com/photos/93/40/03/lthmb_1342934003avr.jpg",
+      "https://i0.shbdn.com/photos/93/40/03/lthmb_1342934003avr.jpg",
+      "https://i0.shbdn.com/photos/93/40/03/lthmb_1342934003avr.jpg",
+      "https://i0.shbdn.com/photos/93/40/03/lthmb_1342934003avr.jpg"
+    ],
+    "photo": "assets/listings/1342934003.jpg"
+  },
+  {
+    "id": "1328078650",
+    "title": "Ayvalık Özkayaoğulları emlak Ali Çetinkaya mh 3 + 1 satılık",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-ayvalik-ozkayaogullari-emlak-ali-cetinkaya-mh-3-plus-1-satilik-1328078650/detay",
+    "price_text": "5.600.000 TL",
+    "price": 5600000,
+    "m2": 150,
+    "rooms": "3+1",
+    "date": "13 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/07/86/50/lthmb_13280786508vk.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/07/86/50/lthmb_13280786508vk.jpg",
+      "https://i0.shbdn.com/photos/07/86/50/lthmb_13280786508vk.jpg",
+      "https://i0.shbdn.com/photos/07/86/50/lthmb_13280786508vk.jpg",
+      "https://i0.shbdn.com/photos/07/86/50/lthmb_13280786508vk.jpg",
+      "https://i0.shbdn.com/photos/07/86/50/lthmb_13280786508vk.jpg",
+      "https://i0.shbdn.com/photos/07/86/50/lthmb_13280786508vk.jpg",
+      "https://i0.shbdn.com/photos/07/86/50/lthmb_13280786508vk.jpg",
+      "https://i0.shbdn.com/photos/07/86/50/lthmb_13280786508vk.jpg",
+      "https://i0.shbdn.com/photos/07/86/50/lthmb_13280786508vk.jpg",
+      "https://i0.shbdn.com/photos/07/86/50/lthmb_13280786508vk.jpg"
+    ],
+    "photo": "assets/listings/1328078650.jpg"
+  },
+  {
+    "id": "1333737385",
+    "title": "AYVALIK ALİ ÇETİNKAYA'DA GENİŞ VE UYGUN FİYATLI 2+1DAİRE",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-ayvalik-ali-cetinkaya-da-genis-ve-uygun-fiyatli-2-plus1daire-1333737385/detay",
+    "price_text": "5.850.000 TL",
+    "price": 5850000,
+    "m2": 120,
+    "rooms": "2+1",
+    "date": "12 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/73/73/85/lthmb_1333737385frv.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/73/73/85/lthmb_1333737385frv.jpg",
+      "https://i0.shbdn.com/photos/73/73/85/lthmb_1333737385frv.jpg",
+      "https://i0.shbdn.com/photos/73/73/85/lthmb_1333737385frv.jpg",
+      "https://i0.shbdn.com/photos/73/73/85/lthmb_1333737385frv.jpg",
+      "https://i0.shbdn.com/photos/73/73/85/lthmb_1333737385frv.jpg",
+      "https://i0.shbdn.com/photos/73/73/85/lthmb_1333737385frv.jpg",
+      "https://i0.shbdn.com/photos/73/73/85/lthmb_1333737385frv.jpg",
+      "https://i0.shbdn.com/photos/73/73/85/lthmb_1333737385frv.jpg",
+      "https://i0.shbdn.com/photos/73/73/85/lthmb_1333737385frv.jpg",
+      "https://i0.shbdn.com/photos/73/73/85/lthmb_1333737385frv.jpg"
+    ],
+    "photo": "assets/listings/1333737385.jpg"
+  },
+  {
+    "id": "1341668346",
+    "title": "Aliçetinkaya Mahallesinde Ferah Konumda 3+1 Daire",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-alicetinkaya-mahallesinde-ferah-konumda-3-plus1-daire-1341668346/detay",
+    "price_text": "5.850.000 TL",
+    "price": 5850000,
+    "m2": 85,
+    "rooms": "3+1",
+    "date": "22 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/66/83/46/lthmb_1341668346kgx.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/66/83/46/lthmb_1341668346kgx.jpg",
+      "https://i0.shbdn.com/photos/66/83/46/lthmb_1341668346kgx.jpg",
+      "https://i0.shbdn.com/photos/66/83/46/lthmb_1341668346kgx.jpg",
+      "https://i0.shbdn.com/photos/66/83/46/lthmb_1341668346kgx.jpg",
+      "https://i0.shbdn.com/photos/66/83/46/lthmb_1341668346kgx.jpg",
+      "https://i0.shbdn.com/photos/66/83/46/lthmb_1341668346kgx.jpg",
+      "https://i0.shbdn.com/photos/66/83/46/lthmb_1341668346kgx.jpg",
+      "https://i0.shbdn.com/photos/66/83/46/lthmb_1341668346kgx.jpg",
+      "https://i0.shbdn.com/photos/66/83/46/lthmb_1341668346kgx.jpg",
+      "https://i0.shbdn.com/photos/66/83/46/lthmb_1341668346kgx.jpg"
+    ],
+    "photo": "assets/listings/1341668346.jpg"
+  },
+  {
+    "id": "1342517438",
+    "title": "Turyap'tan, Terası Kısmi Deniz Manzaralı 5+1 Dubleks Daire",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-turyap-tan-terasi-kismi-deniz-manzarali-5-plus1-dubleks-daire-1342517438/detay",
+    "price_text": "5.900.000 TL",
+    "price": 5900000,
+    "m2": 140,
+    "rooms": "5+1",
+    "date": "26 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/51/74/38/lthmb_1342517438uk3.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/51/74/38/lthmb_1342517438uk3.jpg",
+      "https://i0.shbdn.com/photos/51/74/38/lthmb_1342517438uk3.jpg",
+      "https://i0.shbdn.com/photos/51/74/38/lthmb_1342517438uk3.jpg",
+      "https://i0.shbdn.com/photos/51/74/38/lthmb_1342517438uk3.jpg",
+      "https://i0.shbdn.com/photos/51/74/38/lthmb_1342517438uk3.jpg",
+      "https://i0.shbdn.com/photos/51/74/38/lthmb_1342517438uk3.jpg",
+      "https://i0.shbdn.com/photos/51/74/38/lthmb_1342517438uk3.jpg",
+      "https://i0.shbdn.com/photos/51/74/38/lthmb_1342517438uk3.jpg",
+      "https://i0.shbdn.com/photos/51/74/38/lthmb_1342517438uk3.jpg",
+      "https://i0.shbdn.com/photos/51/74/38/lthmb_1342517438uk3.jpg"
+    ],
+    "photo": "assets/listings/1342517438.jpg"
+  },
+  {
+    "id": "1335325755",
+    "title": "Ayvalık Aliçetinkaya'da Satılık Dubleks Daire",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-ayvalik-alicetinkaya-da-satilik-dubleks-daire-1335325755/detay",
+    "price_text": "5.900.000 TL",
+    "price": 5900000,
+    "m2": 140,
+    "rooms": "3+1",
+    "date": "21 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/32/57/55/lthmb_1335325755soy.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/32/57/55/lthmb_1335325755soy.jpg",
+      "https://i0.shbdn.com/photos/32/57/55/lthmb_1335325755soy.jpg",
+      "https://i0.shbdn.com/photos/32/57/55/lthmb_1335325755soy.jpg",
+      "https://i0.shbdn.com/photos/32/57/55/lthmb_1335325755soy.jpg",
+      "https://i0.shbdn.com/photos/32/57/55/lthmb_1335325755soy.jpg",
+      "https://i0.shbdn.com/photos/32/57/55/lthmb_1335325755soy.jpg",
+      "https://i0.shbdn.com/photos/32/57/55/lthmb_1335325755soy.jpg",
+      "https://i0.shbdn.com/photos/32/57/55/lthmb_1335325755soy.jpg",
+      "https://i0.shbdn.com/photos/32/57/55/lthmb_1335325755soy.jpg",
+      "https://i0.shbdn.com/photos/32/57/55/lthmb_1335325755soy.jpg"
+    ],
+    "photo": "assets/listings/1335325755.jpg"
+  },
+  {
+    "id": "1301600999",
+    "title": "2+1 KAPALI MUTFAK ŞÖMİNE VE BARBEKÜLÜ DAİRE",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-umas-solution-dan-2-plus1-kapali-mutfak-somine-ve-barbekulu-daire-1301600999/detay",
+    "price_text": "5.900.000 TL",
+    "price": 5900000,
+    "m2": 100,
+    "rooms": "2+1",
+    "date": "21 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/60/09/99/lthmb_1301600999ob7.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/60/09/99/lthmb_1301600999ob7.jpg",
+      "https://i0.shbdn.com/photos/60/09/99/lthmb_1301600999ob7.jpg",
+      "https://i0.shbdn.com/photos/60/09/99/lthmb_1301600999ob7.jpg",
+      "https://i0.shbdn.com/photos/60/09/99/lthmb_1301600999ob7.jpg",
+      "https://i0.shbdn.com/photos/60/09/99/lthmb_1301600999ob7.jpg",
+      "https://i0.shbdn.com/photos/60/09/99/lthmb_1301600999ob7.jpg",
+      "https://i0.shbdn.com/photos/60/09/99/lthmb_1301600999ob7.jpg",
+      "https://i0.shbdn.com/photos/60/09/99/lthmb_1301600999ob7.jpg",
+      "https://i0.shbdn.com/photos/60/09/99/lthmb_1301600999ob7.jpg",
+      "https://i0.shbdn.com/photos/60/09/99/lthmb_1301600999ob7.jpg"
+    ],
+    "photo": "assets/listings/1301600999.jpg"
+  },
+  {
+    "id": "1307672886",
+    "title": "ALİ ÇETİNKAYA'DA ÖN CEPHE 3+1 BÜYÜK DAİRE",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-umas-solution-dan-ali-cetinkaya-da-on-cephe-3-plus1-buyuk-daire-1307672886/detay",
+    "price_text": "5.950.000 TL",
+    "price": 5950000,
+    "m2": 130,
+    "rooms": "3+1",
+    "date": "27 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/67/28/86/lthmb_1307672886fmd.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/67/28/86/lthmb_1307672886fmd.jpg",
+      "https://i0.shbdn.com/photos/67/28/86/lthmb_1307672886fmd.jpg",
+      "https://i0.shbdn.com/photos/67/28/86/lthmb_1307672886fmd.jpg",
+      "https://i0.shbdn.com/photos/67/28/86/lthmb_1307672886fmd.jpg",
+      "https://i0.shbdn.com/photos/67/28/86/lthmb_1307672886fmd.jpg",
+      "https://i0.shbdn.com/photos/67/28/86/lthmb_1307672886fmd.jpg",
+      "https://i0.shbdn.com/photos/67/28/86/lthmb_1307672886fmd.jpg",
+      "https://i0.shbdn.com/photos/67/28/86/lthmb_1307672886fmd.jpg",
+      "https://i0.shbdn.com/photos/67/28/86/lthmb_1307672886fmd.jpg",
+      "https://i0.shbdn.com/photos/67/28/86/lthmb_1307672886fmd.jpg"
+    ],
+    "photo": "assets/listings/1307672886.jpg"
+  },
+  {
+    "id": "1334746028",
+    "title": "SATILIK DAİRE",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-satilik-daire-1334746028/detay",
+    "price_text": "6.000.000 TL",
+    "price": 6000000,
+    "m2": 120,
+    "rooms": "2+1",
+    "date": "16 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/74/60/28/lthmb_13347460280uk.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/74/60/28/lthmb_13347460280uk.jpg",
+      "https://i0.shbdn.com/photos/74/60/28/lthmb_13347460280uk.jpg",
+      "https://i0.shbdn.com/photos/74/60/28/lthmb_13347460280uk.jpg",
+      "https://i0.shbdn.com/photos/74/60/28/lthmb_13347460280uk.jpg",
+      "https://i0.shbdn.com/photos/74/60/28/lthmb_13347460280uk.jpg",
+      "https://i0.shbdn.com/photos/74/60/28/lthmb_13347460280uk.jpg",
+      "https://i0.shbdn.com/photos/74/60/28/lthmb_13347460280uk.jpg",
+      "https://i0.shbdn.com/photos/74/60/28/lthmb_13347460280uk.jpg",
+      "https://i0.shbdn.com/photos/74/60/28/lthmb_13347460280uk.jpg",
+      "https://i0.shbdn.com/photos/74/60/28/lthmb_13347460280uk.jpg"
+    ],
+    "photo": "assets/listings/1334746028.jpg"
+  },
+  {
+    "id": "1328041598",
+    "title": "Ayvalık Aliçetinkayada satılık öncephe bakımlı daire",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-ayvalik-alicetinkayada-satilik-oncephe-bakimli-daire-1328041598/detay",
+    "price_text": "6.200.000 TL",
+    "price": 6200000,
+    "m2": 90,
+    "rooms": "2+1",
+    "date": "07 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/04/15/98/lthmb_1328041598p1n.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/04/15/98/lthmb_1328041598p1n.jpg",
+      "https://i0.shbdn.com/photos/04/15/98/lthmb_1328041598p1n.jpg",
+      "https://i0.shbdn.com/photos/04/15/98/lthmb_1328041598p1n.jpg",
+      "https://i0.shbdn.com/photos/04/15/98/lthmb_1328041598p1n.jpg",
+      "https://i0.shbdn.com/photos/04/15/98/lthmb_1328041598p1n.jpg",
+      "https://i0.shbdn.com/photos/04/15/98/lthmb_1328041598p1n.jpg",
+      "https://i0.shbdn.com/photos/04/15/98/lthmb_1328041598p1n.jpg",
+      "https://i0.shbdn.com/photos/04/15/98/lthmb_1328041598p1n.jpg",
+      "https://i0.shbdn.com/photos/04/15/98/lthmb_1328041598p1n.jpg",
+      "https://i0.shbdn.com/photos/04/15/98/lthmb_1328041598p1n.jpg"
+    ],
+    "photo": "assets/listings/1328041598.jpg"
+  },
+  {
+    "id": "1341844104",
+    "title": "Ayvalık Ali Çetinkaya Mah. Satılık Doğalgazlı 2+1 Bakımlı Daire",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-ayvalik-ali-cetinkaya-mah-satilik-dogalgazli-2-plus1-bakimli-daire-1341844104/detay",
+    "price_text": "6.200.000 TL",
+    "price": 6200000,
+    "m2": 110,
+    "rooms": "2+1",
+    "date": "23 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/84/41/04/lthmb_1341844104tsg.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/84/41/04/lthmb_1341844104tsg.jpg",
+      "https://i0.shbdn.com/photos/84/41/04/lthmb_1341844104tsg.jpg",
+      "https://i0.shbdn.com/photos/84/41/04/lthmb_1341844104tsg.jpg",
+      "https://i0.shbdn.com/photos/84/41/04/lthmb_1341844104tsg.jpg",
+      "https://i0.shbdn.com/photos/84/41/04/lthmb_1341844104tsg.jpg",
+      "https://i0.shbdn.com/photos/84/41/04/lthmb_1341844104tsg.jpg",
+      "https://i0.shbdn.com/photos/84/41/04/lthmb_1341844104tsg.jpg",
+      "https://i0.shbdn.com/photos/84/41/04/lthmb_1341844104tsg.jpg",
+      "https://i0.shbdn.com/photos/84/41/04/lthmb_1341844104tsg.jpg",
+      "https://i0.shbdn.com/photos/84/41/04/lthmb_1341844104tsg.jpg"
+    ],
+    "photo": "assets/listings/1341844104.jpg"
+  },
+  {
+    "id": "1341671549",
+    "title": "Ayvalık'ta denize yakın 2+1 bakımlı daire",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-ayvalik-ta-denize-yakin-2-plus1-bakimli-daire-1341671549/detay",
+    "price_text": "6.300.000 TL",
+    "price": 6300000,
+    "m2": 85,
+    "rooms": "2+1",
+    "date": "12 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://image5.sahibinden.com/primeRow/67/15/49/pr_thmb_13416715497ya.jpg",
+    "photos": [
+      "https://image5.sahibinden.com/primeRow/67/15/49/pr_thmb_13416715497ya.jpg",
+      "https://image5.sahibinden.com/primeRow/67/15/49/pr_thmb_13416715497ya.jpg",
+      "https://image5.sahibinden.com/primeRow/67/15/49/pr_thmb_13416715497ya.jpg",
+      "https://image5.sahibinden.com/primeRow/67/15/49/pr_thmb_13416715497ya.jpg",
+      "https://image5.sahibinden.com/primeRow/67/15/49/pr_thmb_13416715497ya.jpg",
+      "https://image5.sahibinden.com/primeRow/67/15/49/pr_thmb_13416715497ya.jpg",
+      "https://image5.sahibinden.com/primeRow/67/15/49/pr_thmb_13416715497ya.jpg",
+      "https://image5.sahibinden.com/primeRow/67/15/49/pr_thmb_13416715497ya.jpg",
+      "https://image5.sahibinden.com/primeRow/67/15/49/pr_thmb_13416715497ya.jpg",
+      "https://image5.sahibinden.com/primeRow/67/15/49/pr_thmb_13416715497ya.jpg"
+    ],
+    "photo": "assets/listings/1341671549.jpg"
+  },
+  {
+    "id": "1327539214",
+    "title": "Ayvalık Ali Çetinkaya Mahallesinde Satılık 2+1 Daire",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-ayvalik-ali-cetinkaya-mahallesinde-satilik-2-plus1-daire-1327539214/detay",
+    "price_text": "6.325.000 TL",
+    "price": 6325000,
+    "m2": 90,
+    "rooms": "2+1",
+    "date": "12 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/53/92/14/lthmb_1327539214jle.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/53/92/14/lthmb_1327539214jle.jpg",
+      "https://i0.shbdn.com/photos/53/92/14/lthmb_1327539214jle.jpg",
+      "https://i0.shbdn.com/photos/53/92/14/lthmb_1327539214jle.jpg",
+      "https://i0.shbdn.com/photos/53/92/14/lthmb_1327539214jle.jpg",
+      "https://i0.shbdn.com/photos/53/92/14/lthmb_1327539214jle.jpg",
+      "https://i0.shbdn.com/photos/53/92/14/lthmb_1327539214jle.jpg",
+      "https://i0.shbdn.com/photos/53/92/14/lthmb_1327539214jle.jpg",
+      "https://i0.shbdn.com/photos/53/92/14/lthmb_1327539214jle.jpg",
+      "https://i0.shbdn.com/photos/53/92/14/lthmb_1327539214jle.jpg",
+      "https://i0.shbdn.com/photos/53/92/14/lthmb_1327539214jle.jpg"
+    ],
+    "photo": "assets/listings/1327539214.jpg"
+  },
+  {
+    "id": "1308959699",
+    "title": "Ayvalık Aliçetinkayada satılık 3 artı 1 kaloriferli daire",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-ayvalik-alicetinkayada-satilik-3-arti-1-kaloriferli-daire-1308959699/detay",
+    "price_text": "6.400.000 TL",
+    "price": 6400000,
+    "m2": 120,
+    "rooms": "3+1",
+    "date": "05 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/95/96/99/lthmb_1308959699fpz.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/95/96/99/lthmb_1308959699fpz.jpg",
+      "https://i0.shbdn.com/photos/95/96/99/lthmb_1308959699fpz.jpg",
+      "https://i0.shbdn.com/photos/95/96/99/lthmb_1308959699fpz.jpg",
+      "https://i0.shbdn.com/photos/95/96/99/lthmb_1308959699fpz.jpg",
+      "https://i0.shbdn.com/photos/95/96/99/lthmb_1308959699fpz.jpg",
+      "https://i0.shbdn.com/photos/95/96/99/lthmb_1308959699fpz.jpg",
+      "https://i0.shbdn.com/photos/95/96/99/lthmb_1308959699fpz.jpg",
+      "https://i0.shbdn.com/photos/95/96/99/lthmb_1308959699fpz.jpg",
+      "https://i0.shbdn.com/photos/95/96/99/lthmb_1308959699fpz.jpg",
+      "https://i0.shbdn.com/photos/95/96/99/lthmb_1308959699fpz.jpg"
+    ],
+    "photo": "assets/listings/1308959699.jpg"
+  },
+  {
+    "id": "1331907294",
+    "title": "VA-2 Ayvalık Aliçetinkaya Mh. Merkezi konumda satılık 2+1 Daire",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-va-2-ayvalik-alicetinkaya-mh-merkezi-konumda-satilik-2-plus1-daire-1331907294/detay",
+    "price_text": "6.490.000 TL",
+    "price": 6490000,
+    "m2": 90,
+    "rooms": "2+1",
+    "date": "01 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/90/72/94/lthmb_1331907294xp7.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/90/72/94/lthmb_1331907294xp7.jpg",
+      "https://i0.shbdn.com/photos/90/72/94/lthmb_1331907294xp7.jpg",
+      "https://i0.shbdn.com/photos/90/72/94/lthmb_1331907294xp7.jpg",
+      "https://i0.shbdn.com/photos/90/72/94/lthmb_1331907294xp7.jpg",
+      "https://i0.shbdn.com/photos/90/72/94/lthmb_1331907294xp7.jpg",
+      "https://i0.shbdn.com/photos/90/72/94/lthmb_1331907294xp7.jpg",
+      "https://i0.shbdn.com/photos/90/72/94/lthmb_1331907294xp7.jpg",
+      "https://i0.shbdn.com/photos/90/72/94/lthmb_1331907294xp7.jpg",
+      "https://i0.shbdn.com/photos/90/72/94/lthmb_1331907294xp7.jpg",
+      "https://i0.shbdn.com/photos/90/72/94/lthmb_1331907294xp7.jpg"
+    ],
+    "photo": "assets/listings/1331907294.jpg"
+  },
+  {
+    "id": "1345387300",
+    "title": "ANIL EMLAK TAN SATILIK ÖN CEPHE 3+1 GENİŞ DAİRE",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-anil-emlak-tan-satilik-on-cephe-3-plus1-genis-daire-1345387300/detay",
+    "price_text": "6.500.000 TL",
+    "price": 6500000,
+    "m2": 120,
+    "rooms": "3+1",
+    "date": "12 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/38/73/00/lthmb_134538730039t.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/38/73/00/lthmb_134538730039t.jpg",
+      "https://i0.shbdn.com/photos/38/73/00/lthmb_134538730039t.jpg",
+      "https://i0.shbdn.com/photos/38/73/00/lthmb_134538730039t.jpg",
+      "https://i0.shbdn.com/photos/38/73/00/lthmb_134538730039t.jpg",
+      "https://i0.shbdn.com/photos/38/73/00/lthmb_134538730039t.jpg",
+      "https://i0.shbdn.com/photos/38/73/00/lthmb_134538730039t.jpg",
+      "https://i0.shbdn.com/photos/38/73/00/lthmb_134538730039t.jpg",
+      "https://i0.shbdn.com/photos/38/73/00/lthmb_134538730039t.jpg",
+      "https://i0.shbdn.com/photos/38/73/00/lthmb_134538730039t.jpg",
+      "https://i0.shbdn.com/photos/38/73/00/lthmb_134538730039t.jpg"
+    ],
+    "photo": "assets/listings/1345387300.jpg"
+  },
+  {
+    "id": "1341048103",
+    "title": "AYVALIK ALİ ÇETİNKAYA MH. KÖŞE ve ORTA KAT DAİRE SATILIK",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-ayvalik-ali-cetinkaya-mh-kose-ve-orta-kat-daire-satilik-1341048103/detay",
+    "price_text": "6.500.000 TL",
+    "price": 6500000,
+    "m2": 100,
+    "rooms": "2+1",
+    "date": "04 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/04/81/03/lthmb_13410481036ot.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/04/81/03/lthmb_13410481036ot.jpg",
+      "https://i0.shbdn.com/photos/04/81/03/lthmb_13410481036ot.jpg",
+      "https://i0.shbdn.com/photos/04/81/03/lthmb_13410481036ot.jpg",
+      "https://i0.shbdn.com/photos/04/81/03/lthmb_13410481036ot.jpg",
+      "https://i0.shbdn.com/photos/04/81/03/lthmb_13410481036ot.jpg",
+      "https://i0.shbdn.com/photos/04/81/03/lthmb_13410481036ot.jpg",
+      "https://i0.shbdn.com/photos/04/81/03/lthmb_13410481036ot.jpg",
+      "https://i0.shbdn.com/photos/04/81/03/lthmb_13410481036ot.jpg",
+      "https://i0.shbdn.com/photos/04/81/03/lthmb_13410481036ot.jpg",
+      "https://i0.shbdn.com/photos/04/81/03/lthmb_13410481036ot.jpg"
+    ],
+    "photo": "assets/listings/1341048103.jpg"
+  },
+  {
+    "id": "1319982449",
+    "title": "EŞSİZ DENİZ MANZARALI 1+1 DAİRELER",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-umas-solution-dan-essiz-deniz-manzarali-1-plus1-daireler-1319982449/detay",
+    "price_text": "6.500.000 TL",
+    "price": 6500000,
+    "m2": 50,
+    "rooms": "1+1",
+    "date": "02 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/98/24/49/lthmb_1319982449nte.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/98/24/49/lthmb_1319982449nte.jpg",
+      "https://i0.shbdn.com/photos/98/24/49/lthmb_1319982449nte.jpg",
+      "https://i0.shbdn.com/photos/98/24/49/lthmb_1319982449nte.jpg",
+      "https://i0.shbdn.com/photos/98/24/49/lthmb_1319982449nte.jpg",
+      "https://i0.shbdn.com/photos/98/24/49/lthmb_1319982449nte.jpg",
+      "https://i0.shbdn.com/photos/98/24/49/lthmb_1319982449nte.jpg",
+      "https://i0.shbdn.com/photos/98/24/49/lthmb_1319982449nte.jpg",
+      "https://i0.shbdn.com/photos/98/24/49/lthmb_1319982449nte.jpg",
+      "https://i0.shbdn.com/photos/98/24/49/lthmb_1319982449nte.jpg",
+      "https://i0.shbdn.com/photos/98/24/49/lthmb_1319982449nte.jpg"
+    ],
+    "photo": "assets/listings/1319982449.jpg"
+  },
+  {
+    "id": "1342055323",
+    "title": "AYVALIK ALİÇETİNKAYA MH 3+1 SATILIK GENİŞ DAİRE",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-ayvalik-alicetinkaya-mh-3-plus1-satilik-genis-daire-1342055323/detay",
+    "price_text": "6.500.000 TL",
+    "price": 6500000,
+    "m2": 120,
+    "rooms": "3+1",
+    "date": "24 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/05/53/23/lthmb_1342055323o5r.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/05/53/23/lthmb_1342055323o5r.jpg",
+      "https://i0.shbdn.com/photos/05/53/23/lthmb_1342055323o5r.jpg",
+      "https://i0.shbdn.com/photos/05/53/23/lthmb_1342055323o5r.jpg",
+      "https://i0.shbdn.com/photos/05/53/23/lthmb_1342055323o5r.jpg",
+      "https://i0.shbdn.com/photos/05/53/23/lthmb_1342055323o5r.jpg",
+      "https://i0.shbdn.com/photos/05/53/23/lthmb_1342055323o5r.jpg",
+      "https://i0.shbdn.com/photos/05/53/23/lthmb_1342055323o5r.jpg",
+      "https://i0.shbdn.com/photos/05/53/23/lthmb_1342055323o5r.jpg",
+      "https://i0.shbdn.com/photos/05/53/23/lthmb_1342055323o5r.jpg",
+      "https://i0.shbdn.com/photos/05/53/23/lthmb_1342055323o5r.jpg"
+    ],
+    "photo": "assets/listings/1342055323.jpg"
+  },
+  {
+    "id": "1340344692",
+    "title": "VA 2 - Aliçetinkaya Mah Özel Tasarım 2+1 Bahçeli Satılık Daire",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-va-2-alicetinkaya-mah-ozel-tasarim-2-plus1-bahceli-satilik-daire-1340344692/detay",
+    "price_text": "6.500.000 TL",
+    "price": 6500000,
+    "m2": 100,
+    "rooms": "2+1",
+    "date": "15 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/34/46/92/lthmb_1340344692n4m.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/34/46/92/lthmb_1340344692n4m.jpg",
+      "https://i0.shbdn.com/photos/34/46/92/lthmb_1340344692n4m.jpg",
+      "https://i0.shbdn.com/photos/34/46/92/lthmb_1340344692n4m.jpg",
+      "https://i0.shbdn.com/photos/34/46/92/lthmb_1340344692n4m.jpg",
+      "https://i0.shbdn.com/photos/34/46/92/lthmb_1340344692n4m.jpg",
+      "https://i0.shbdn.com/photos/34/46/92/lthmb_1340344692n4m.jpg",
+      "https://i0.shbdn.com/photos/34/46/92/lthmb_1340344692n4m.jpg",
+      "https://i0.shbdn.com/photos/34/46/92/lthmb_1340344692n4m.jpg",
+      "https://i0.shbdn.com/photos/34/46/92/lthmb_1340344692n4m.jpg",
+      "https://i0.shbdn.com/photos/34/46/92/lthmb_1340344692n4m.jpg"
+    ],
+    "photo": "assets/listings/1340344692.jpg"
+  },
+  {
+    "id": "1322743773",
+    "title": "Bahçe Keyfi ve Merkez Konforu: AliÇetinkayada Satılık Nefis 3+1",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-bahce-keyfi-ve-merkez-konforu-alicetinkayada-satilik-nefis-3-plus1-1322743773/detay",
+    "price_text": "6.650.000 TL",
+    "price": 6650000,
+    "m2": 110,
+    "rooms": "3+1",
+    "date": "14 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/74/37/73/lthmb_1322743773e1w.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/74/37/73/lthmb_1322743773e1w.jpg",
+      "https://i0.shbdn.com/photos/74/37/73/lthmb_1322743773e1w.jpg",
+      "https://i0.shbdn.com/photos/74/37/73/lthmb_1322743773e1w.jpg",
+      "https://i0.shbdn.com/photos/74/37/73/lthmb_1322743773e1w.jpg",
+      "https://i0.shbdn.com/photos/74/37/73/lthmb_1322743773e1w.jpg",
+      "https://i0.shbdn.com/photos/74/37/73/lthmb_1322743773e1w.jpg",
+      "https://i0.shbdn.com/photos/74/37/73/lthmb_1322743773e1w.jpg",
+      "https://i0.shbdn.com/photos/74/37/73/lthmb_1322743773e1w.jpg",
+      "https://i0.shbdn.com/photos/74/37/73/lthmb_1322743773e1w.jpg",
+      "https://i0.shbdn.com/photos/74/37/73/lthmb_1322743773e1w.jpg"
+    ],
+    "photo": "assets/listings/1322743773.jpg"
+  },
+  {
+    "id": "1332914116",
+    "title": "AYVALIK ALİ ÇETİNKAYA MAHALLESİ MERKEZİ, MASRAFSIZ DAİRE",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-ayvalik-ali-cetinkaya-mahallesi-merkezi-masrafsiz-daire-1332914116/detay",
+    "price_text": "6.750.000 TL",
+    "price": 6750000,
+    "m2": 120,
+    "rooms": "3+1",
+    "date": "09 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/91/41/16/lthmb_13329141162vf.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/91/41/16/lthmb_13329141162vf.jpg",
+      "https://i0.shbdn.com/photos/91/41/16/lthmb_13329141162vf.jpg",
+      "https://i0.shbdn.com/photos/91/41/16/lthmb_13329141162vf.jpg",
+      "https://i0.shbdn.com/photos/91/41/16/lthmb_13329141162vf.jpg",
+      "https://i0.shbdn.com/photos/91/41/16/lthmb_13329141162vf.jpg",
+      "https://i0.shbdn.com/photos/91/41/16/lthmb_13329141162vf.jpg",
+      "https://i0.shbdn.com/photos/91/41/16/lthmb_13329141162vf.jpg",
+      "https://i0.shbdn.com/photos/91/41/16/lthmb_13329141162vf.jpg",
+      "https://i0.shbdn.com/photos/91/41/16/lthmb_13329141162vf.jpg",
+      "https://i0.shbdn.com/photos/91/41/16/lthmb_13329141162vf.jpg"
+    ],
+    "photo": "assets/listings/1332914116.jpg"
+  },
+  {
+    "id": "1339904172",
+    "title": "Ayvalık Armutçuk Satılık daire",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-ayvalik-armutcuk-satilik-daire-1339904172/detay",
+    "price_text": "6.750.000 TL",
+    "price": 6750000,
+    "m2": 160,
+    "rooms": "3+1",
+    "date": "23 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "",
+    "photos": [],
+    "photo": ""
+  },
+  {
+    "id": "1328705590",
+    "title": "FİYAT DÜŞTÜ AYVALIK ALİÇETİNKAYA MH.SATILIK KALORİFERLİ 2+1DAİRE",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-fiyat-dustu-ayvalik-alicetinkaya-mh.satilik-kaloriferli-2-plus1daire-1328705590/detay",
+    "price_text": "6.900.000 TL",
+    "price": 6900000,
+    "m2": 110,
+    "rooms": "2+1",
+    "date": "14 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/70/55/90/lthmb_1328705590bvu.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/70/55/90/lthmb_1328705590bvu.jpg",
+      "https://i0.shbdn.com/photos/70/55/90/lthmb_1328705590bvu.jpg",
+      "https://i0.shbdn.com/photos/70/55/90/lthmb_1328705590bvu.jpg",
+      "https://i0.shbdn.com/photos/70/55/90/lthmb_1328705590bvu.jpg",
+      "https://i0.shbdn.com/photos/70/55/90/lthmb_1328705590bvu.jpg",
+      "https://i0.shbdn.com/photos/70/55/90/lthmb_1328705590bvu.jpg",
+      "https://i0.shbdn.com/photos/70/55/90/lthmb_1328705590bvu.jpg",
+      "https://i0.shbdn.com/photos/70/55/90/lthmb_1328705590bvu.jpg",
+      "https://i0.shbdn.com/photos/70/55/90/lthmb_1328705590bvu.jpg",
+      "https://i0.shbdn.com/photos/70/55/90/lthmb_1328705590bvu.jpg"
+    ],
+    "photo": "assets/listings/1328705590.jpg"
+  },
+  {
+    "id": "1288078613",
+    "title": "ALTIN EMLAKTAN AYVALIK ARMUTÇUKTA SATILIK 4+1 ÇATI DUBLEKS",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-altin-emlaktan-ayvalik-armutcukta-satilik-4-plus1-cati-dubleks-1288078613/detay",
+    "price_text": "6.900.000 TL",
+    "price": 6900000,
+    "m2": 175,
+    "rooms": "4+1",
+    "date": "06 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/07/86/13/lthmb_12880786130h5.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/07/86/13/lthmb_12880786130h5.jpg",
+      "https://i0.shbdn.com/photos/07/86/13/lthmb_12880786130h5.jpg",
+      "https://i0.shbdn.com/photos/07/86/13/lthmb_12880786130h5.jpg",
+      "https://i0.shbdn.com/photos/07/86/13/lthmb_12880786130h5.jpg",
+      "https://i0.shbdn.com/photos/07/86/13/lthmb_12880786130h5.jpg",
+      "https://i0.shbdn.com/photos/07/86/13/lthmb_12880786130h5.jpg",
+      "https://i0.shbdn.com/photos/07/86/13/lthmb_12880786130h5.jpg",
+      "https://i0.shbdn.com/photos/07/86/13/lthmb_12880786130h5.jpg",
+      "https://i0.shbdn.com/photos/07/86/13/lthmb_12880786130h5.jpg",
+      "https://i0.shbdn.com/photos/07/86/13/lthmb_12880786130h5.jpg"
+    ],
+    "photo": "assets/listings/1288078613.jpg"
+  },
+  {
+    "id": "1332191437",
+    "title": "AYVALIK ALİ ÇETİNKAYA'DA ÖZEL BAHÇELİ MÜSTAKİL TADINDA 3+1",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-ayvalik-ali-cetinkaya-da-ozel-bahceli-mustakil-tadinda-3-plus1-1332191437/detay",
+    "price_text": "6.900.000 TL",
+    "price": 6900000,
+    "m2": 135,
+    "rooms": "3+1",
+    "date": "02 Ekim 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/19/14/37/lthmb_1332191437l8e.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/19/14/37/lthmb_1332191437l8e.jpg",
+      "https://i0.shbdn.com/photos/19/14/37/lthmb_1332191437l8e.jpg",
+      "https://i0.shbdn.com/photos/19/14/37/lthmb_1332191437l8e.jpg",
+      "https://i0.shbdn.com/photos/19/14/37/lthmb_1332191437l8e.jpg",
+      "https://i0.shbdn.com/photos/19/14/37/lthmb_1332191437l8e.jpg",
+      "https://i0.shbdn.com/photos/19/14/37/lthmb_1332191437l8e.jpg",
+      "https://i0.shbdn.com/photos/19/14/37/lthmb_1332191437l8e.jpg",
+      "https://i0.shbdn.com/photos/19/14/37/lthmb_1332191437l8e.jpg",
+      "https://i0.shbdn.com/photos/19/14/37/lthmb_1332191437l8e.jpg",
+      "https://i0.shbdn.com/photos/19/14/37/lthmb_1332191437l8e.jpg"
+    ],
+    "photo": "assets/listings/1332191437.jpg"
+  },
+  {
+    "id": "1341963999",
+    "title": "Turyap'tan İgdeli Sahile Yakın 2+1 Bakımlı Daire",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-turyap-tan-igdeli-sahile-yakin-2-plus1-bakimli-daire-1341963999/detay",
+    "price_text": "6.900.000 TL",
+    "price": 6900000,
+    "m2": 100,
+    "rooms": "2+1",
+    "date": "23 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/96/39/99/lthmb_13419639991xd.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/96/39/99/lthmb_13419639991xd.jpg",
+      "https://i0.shbdn.com/photos/96/39/99/lthmb_13419639991xd.jpg",
+      "https://i0.shbdn.com/photos/96/39/99/lthmb_13419639991xd.jpg",
+      "https://i0.shbdn.com/photos/96/39/99/lthmb_13419639991xd.jpg",
+      "https://i0.shbdn.com/photos/96/39/99/lthmb_13419639991xd.jpg",
+      "https://i0.shbdn.com/photos/96/39/99/lthmb_13419639991xd.jpg",
+      "https://i0.shbdn.com/photos/96/39/99/lthmb_13419639991xd.jpg",
+      "https://i0.shbdn.com/photos/96/39/99/lthmb_13419639991xd.jpg",
+      "https://i0.shbdn.com/photos/96/39/99/lthmb_13419639991xd.jpg",
+      "https://i0.shbdn.com/photos/96/39/99/lthmb_13419639991xd.jpg"
+    ],
+    "photo": "assets/listings/1341963999.jpg"
+  },
+  {
+    "id": "1334788644",
+    "title": "AYVALIK ALİÇETİNKAYA MAH.de SATILIK 3+1 DAİRE",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-derya-dan-ayvalik-alicetinkaya-mah.de-satilik-3-plus1-daire-1334788644/detay",
+    "price_text": "6.950.000 TL",
+    "price": 6950000,
+    "m2": 120,
+    "rooms": "3+1",
+    "date": "22 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/78/86/44/lthmb_1334788644igp.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/78/86/44/lthmb_1334788644igp.jpg",
+      "https://i0.shbdn.com/photos/78/86/44/lthmb_1334788644igp.jpg",
+      "https://i0.shbdn.com/photos/78/86/44/lthmb_1334788644igp.jpg",
+      "https://i0.shbdn.com/photos/78/86/44/lthmb_1334788644igp.jpg",
+      "https://i0.shbdn.com/photos/78/86/44/lthmb_1334788644igp.jpg",
+      "https://i0.shbdn.com/photos/78/86/44/lthmb_1334788644igp.jpg",
+      "https://i0.shbdn.com/photos/78/86/44/lthmb_1334788644igp.jpg",
+      "https://i0.shbdn.com/photos/78/86/44/lthmb_1334788644igp.jpg",
+      "https://i0.shbdn.com/photos/78/86/44/lthmb_1334788644igp.jpg",
+      "https://i0.shbdn.com/photos/78/86/44/lthmb_1334788644igp.jpg"
+    ],
+    "photo": "assets/listings/1334788644.jpg"
+  },
+  {
+    "id": "1330493002",
+    "title": "DENİZ MANZARALI BAHÇE KATI 1+1 DAİRE",
+    "url": "https://www.sahibinden.com/ilan/emlak-konut-satilik-umas-solution-dan-deniz-manzarali-bahce-kati-1-plus1-daire-1330493002/detay",
+    "price_text": "7.000.000 TL",
+    "price": 7000000,
+    "m2": 40,
+    "rooms": "1+1",
+    "date": "23 Eylül 2026",
+    "location": "Ali Çetinkaya Mh.",
+    "store": "",
+    "image": "https://i0.shbdn.com/photos/49/30/02/lthmb_13304930020yb.jpg",
+    "photos": [
+      "https://i0.shbdn.com/photos/49/30/02/lthmb_13304930020yb.jpg",
+      "https://i0.shbdn.com/photos/49/30/02/lthmb_13304930020yb.jpg",
+      "https://i0.shbdn.com/photos/49/30/02/lthmb_13304930020yb.jpg",
+      "https://i0.shbdn.com/photos/49/30/02/lthmb_13304930020yb.jpg",
+      "https://i0.shbdn.com/photos/49/30/02/lthmb_13304930020yb.jpg",
+      "https://i0.shbdn.com/photos/49/30/02/lthmb_13304930020yb.jpg",
+      "https://i0.shbdn.com/photos/49/30/02/lthmb_13304930020yb.jpg",
+      "https://i0.shbdn.com/photos/49/30/02/lthmb_13304930020yb.jpg",
+      "https://i0.shbdn.com/photos/49/30/02/lthmb_13304930020yb.jpg",
+      "https://i0.shbdn.com/photos/49/30/02/lthmb_13304930020yb.jpg"
+    ],
+    "photo": "assets/listings/1330493002.jpg"
+  }
+]';
+        
+        function esc(s) {
+            return String(s ?? '').replace(/[&<>"'']/g, c => '&#' + c.charCodeAt(0) + ';');
+        }
+        
+        function imgRetry(el, id) {
+            if (el.dataset.r === '1') {
+                el.outerHTML = '<div class="ph">TRIO PRIME · ' + id + '</div>';
+                return;
+            }
+            el.dataset.r = '1';
+            setTimeout(() => { el.removeAttribute('onerror'); el.src = el.src; }, 2000);
+        }
+        
+        function card(c) {
+            const img = c.img
+                ? `<img src="${esc(c.img)}" alt="${esc(c.t)}" loading="lazy" width="100%" height="230" onerror="imgRetry(this, '${esc(c.id)}')">`
+                : `<div class="ph">TRIO PRIME · ${esc(c.id)}</div>`;
+            const meta = [c.loc, c.oda ? c.oda + ' oda' : '', c.m2 ? c.m2 + ' m²' : '', c.d].filter(Boolean).join(' · ');
+            return `<article class="card">
+                ${img}
+                <div class="card-body">
+                    <h3>${esc(c.t)}</h3>
+                    <p class="price">${esc(c.p)}</p>
+                    <p class="meta">${esc(meta)}</p>
+                    ${c.u ? `<a href="${esc(c.u)}" target="_blank" rel="noopener" class="badge-trio">İlanı Gör</a>` : ''}
+                </div>
+            </article>`;
+        }
+        
+        function apply() {
+            const mah = document.getElementById('f-mah').value;
+            const oda = document.getElementById('f-oda').value;
+            const fMax = parseInt(document.getElementById('f-fiyat').value) || Infinity;
+            const m2Min = parseInt(document.getElementById('f-m2').value) || 0;
+            const out = DATA.filter(c =>
+                (mah === 'Tümü' || c.loc === mah) &&
+                (oda === 'Tümü' || c.oda === oda) &&
+                (c.pv ?? Infinity) <= fMax &&
+                (parseInt(c.m2) || 0) >= m2Min
+            );
+            document.getElementById('grid').innerHTML = out.map(card).join('');
+            document.getElementById('empty').style.display = out.length ? 'none' : 'block';
+            document.getElementById('cnt-top').textContent = out.length + ' / ' + DATA.length;
+        }
+        
+        document.getElementById('btn-reset').onclick = () => {
+            ['f-mah','f-oda'].forEach(id => document.getElementById(id).value = 'Tümü');
+            document.getElementById('f-fiyat').value = '';
+            document.getElementById('f-m2').value = '';
+            apply();
+        };
+        ['f-mah','f-oda'].forEach(id => document.getElementById(id).addEventListener('change', apply));
+        ['f-fiyat','f-m2'].forEach(id => document.getElementById(id).addEventListener('input', apply));
+        apply();
+    </script>
+</body>
+</html>

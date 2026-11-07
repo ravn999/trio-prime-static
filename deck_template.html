@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TRIO · Portföy Sunumu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#faf9f7; --surface:#ffffff; --ink:#1c1c1e; --ink-2:#5a5a5f; --ink-3:#8e8e93;
+  --line:#e8e6e1; --accent:#c6202a; --accent-soft:#fdf2f2;
+  --radius:14px; --shadow:0 1px 2px rgba(28,28,30,.04),0 8px 24px rgba(28,28,30,.06);
+  --shadow-lg:0 2px 4px rgba(28,28,30,.05),0 16px 48px rgba(28,28,30,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);
+  -webkit-font-smoothing:antialiased;line-height:1.55}
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+
+/* ── header ── */
+header{position:sticky;top:0;z-index:50;background:rgba(250,249,247,.86);backdrop-filter:blur(14px) saturate(1.4);
+  border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;height:72px}
+.brand img{height:34px;display:block}
+.brand-sub{font-size:10px;letter-spacing:.16em;color:var(--ink-3);margin-top:2px}
+.nav{display:flex;gap:26px;align-items:center}
+.nav a{color:var(--ink-2);text-decoration:none;font-size:14px;font-weight:500;transition:color .18s}
+.nav a:hover{color:var(--accent)}
+
+/* ── hero ── */
+.hero{padding:76px 0 56px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;right:-160px;top:-120px;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle,rgba(198,32,42,.055),transparent 68%);pointer-events:none}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--accent);background:var(--accent-soft);
+  padding:7px 15px;border-radius:99px;margin-bottom:24px}
+.eyebrow i{width:5px;height:5px;border-radius:50%;background:var(--accent);display:block}
+.hero h1{font-size:clamp(34px,4.6vw,56px);font-weight:600;letter-spacing:-.028em;line-height:1.08;max-width:15ch}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{margin-top:20px;font-size:17px;color:var(--ink-2);max-width:56ch;font-weight:400}
+.hero-meta{display:flex;gap:40px;margin-top:38px;flex-wrap:wrap}
+.metric b{display:block;font-size:30px;font-weight:600;letter-spacing:-.02em}
+.metric span{font-size:12px;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+
+/* ── filters ── */
+.filters{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px 24px;box-shadow:var(--shadow);margin:8px 0 34px}
+.f-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:18px}
+.f label{display:block;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:7px}
+.f select,.f input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#fdfdfc;
+  font:inherit;font-size:14px;color:var(--ink);transition:border-color .18s,box-shadow .18s}
+.f select:focus,.f input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(198,32,42,.09)}
+.f-foot{display:flex;align-items:center;justify-content:space-between;margin-top:18px;
+  padding-top:16px;border-top:1px solid var(--line);flex-wrap:wrap;gap:12px}
+.count{font-size:14px;color:var(--ink-2)}
+.count b{color:var(--ink);font-weight:600}
+.btn{font:inherit;font-size:13px;font-weight:500;padding:9px 18px;border-radius:8px;cursor:pointer;
+  border:1px solid var(--line);background:#fff;color:var(--ink-2);transition:all .18s}
+.btn:hover{border-color:var(--ink-3);color:var(--ink)}
+
+/* ── grid ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(288px,1fr));gap:26px;padding-bottom:80px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+  display:flex;flex-direction:column;transition:transform .28s cubic-bezier(.2,.7,.3,1),box-shadow .28s,border-color .28s;
+  text-decoration:none;color:inherit}
+.card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:#dcd9d3}
+.thumb{position:relative;aspect-ratio:4/3;background:#eeece8;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.2,.7,.3,1)}
+.card:hover .thumb img{transform:scale(1.05)}
+.thumb .ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--ink-3);font-size:13px}
+.tag{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  font-size:11px;font-weight:600;letter-spacing:.05em;padding:5px 11px;border-radius:7px;color:var(--ink)}
+.body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:11px;flex:1}
+.title{font-size:15px;font-weight:500;line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em}
+.price{font-size:21px;font-weight:600;letter-spacing:-.02em;color:var(--ink)}
+.specs{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+.chip{font-size:12px;color:var(--ink-2);background:#f6f5f2;border:1px solid var(--line);
+  padding:4px 10px;border-radius:6px;font-weight:500}
+.foot{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--ink-3);
+  padding-top:12px;border-top:1px solid var(--line)}
+.empty{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--ink-3)}
+.empty b{display:block;font-size:17px;color:var(--ink);margin-bottom:8px;font-weight:600}
+
+/* ── detail modal ── */
+.modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}
+.modal-backdrop{position:absolute;inset:0;background:rgba(28,28,30,.5);backdrop-filter:blur(4px)}
+.modal-card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-lg);max-width:600px;width:100%;max-height:92vh;overflow:auto;animation:pop .22s cubic-bezier(.2,.7,.3,1)}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+.modal-close{position:absolute;top:14px;right:14px;z-index:2;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.94);color:var(--ink);font-size:22px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s}
+.modal-close:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.modal-photo{aspect-ratio:4/3;background:#eeece8;overflow:hidden;border-radius:18px 18px 0 0;position:relative}
+.modal-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.modal-photo .ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--ink-3);font-size:14px}
+.gallery-nav{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2}
+.gallery-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer;transition:all .2s}
+.gallery-dot.active{background:#fff;transform:scale(1.3)}
+.gallery-arrow{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.92);border:none;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;z-index:2;transition:all .18s;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.gallery-arrow:hover{background:#fff;transform:translateY(-50%) scale(1.08)}
+.gallery-arrow.prev{left:10px}
+.gallery-arrow.next{right:10px}
+.thumb-nav{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;padding:3px 8px;border-radius:5px;font-weight:500}
+.modal-body{padding:26px 28px 30px}
+.dm-title{font-size:20px;font-weight:600;line-height:1.35;letter-spacing:-.01em}
+.dm-price{font-size:28px;font-weight:600;letter-spacing:-.02em;color:var(--accent);margin-top:10px}
+.dm-specs{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.dm-specs .chip{font-size:12.5px;color:var(--ink-2);background:#f6f5f2;border:1px solid var(--line);padding:5px 11px;border-radius:6px;font-weight:500}
+.dm-meta{font-size:13px;color:var(--ink-3);margin-top:14px}
+.dm-office{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);font-size:14px;color:var(--ink-2);line-height:1.7}
+.dm-office b{color:var(--ink);font-weight:600}
+.dm-cta{display:inline-block;margin-top:20px;background:var(--accent);color:#fff;text-decoration:none;font-size:14px;font-weight:500;padding:11px 24px;border-radius:9px;transition:opacity .18s}
+.dm-cta:hover{opacity:.9}
+
+/* ── footer ── */
+footer{border-top:1px solid var(--line);background:var(--surface);padding:44px 0 36px}
+.f-wrap{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap;align-items:flex-start}
+.f-brand img{height:30px}
+.f-brand p{font-size:13px;color:var(--ink-3);margin-top:12px;max-width:38ch;line-height:1.6}
+.f-info{font-size:13px;color:var(--ink-2);text-align:right;line-height:2}
+.f-info a{color:var(--accent);text-decoration:none;font-weight:500}
+.legal{margin-top:30px;padding-top:22px;border-top:1px solid var(--line);
+  font-size:11.5px;color:var(--ink-3);line-height:1.7}
+
+@media(max-width:720px){
+  .hero{padding:52px 0 40px}.hero-meta{gap:28px}
+  .nav{display:none}
+  .f-info{text-align:left}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#">
+      <img id="logo-header" src="assets/trio-mark-white.png" alt="trio.">
+    </a>
+    <nav class="nav">
+      <a href="#portfoy">Portföy</a>
+      <a href="#iletisim">İletişim</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><i></i>Ali Çetinkaya · Ayvalık</div>
+    <h1>Size özel <em>seçilmiş</em> portföy</h1>
+    <p>Aradığınız kriterlere uygun konutları tek bir yerde topladık. Her mülkü
+       fotoğrafları ve detaylarıyla inceleyebilir, ilgilendiğinizi bize iletebilirsiniz.</p>
+    <div class="hero-meta">
+      <div class="metric"><b id="m-total">—</b><span>Aktif ilan</span></div>
+      <div class="metric"><b id="m-min">—</b><span>Başlangıç fiyatı</span></div>
+      <div class="metric"><b id="m-m2">—</b><span>m² aralığı</span></div>
+    </div>
+  </div>
+</section>
+
+<main class="wrap" id="portfoy">
+  <div class="filters">
+    <div class="f-grid">
+      <div class="f">
+        <label for="f-sale">İşlem</label>
+        <select id="f-sale"><option value="">Tümü</option><option value="Satılık">Satılık</option><option value="Kiralık">Kiralık</option></select>
+      </div>
+      <div class="f">
+        <label for="f-type">Gayrimenkul tipi</label>
+        <select id="f-type"><option value="">Tümü</option><option value="Daire">Daire</option><option value="Villa">Villa</option><option value="Müstakil / Ev">Müstakil / Ev</option><option value="Ofis / Büro">Ofis / Büro</option></select>
+      </div>
+      <div class="f">
+        <label for="f-neigh">Mahalle</label>
+        <select id="f-neigh"><option value="">Tümü</option></select>
+      </div>
+      <div class="f">
+        <label for="f-price">Fiyat üst sınırı</label>
+        <input type="range" id="f-price" min="3000000" max="6500000" step="50000" value="6500000">
+        <div style="font-size:13px;color:var(--ink-2);margin-top:8px"><b id="f-price-v">—</b> TL</div>
+      </div>
+      <div class="f">
+        <label for="f-rooms">Oda sayısı</label>
+        <select id="f-rooms"><option value="">Tümü</option></select>
+      </div>
+      <div class="f">
+        <label for="f-m2">En az m²</label>
+        <select id="f-m2"><option value="">Tümü</option></select>
+      </div>
+      <div class="f">
+        <label for="f-sort">Sıralama</label>
+        <select id="f-sort">
+          <option value="price-asc">Fiyat: artan</option>
+          <option value="price-desc">Fiyat: azalan</option>
+          <option value="m2-desc">m²: azalan</option>
+          <option value="m2-asc">m²: artan</option>
+          <option value="date-desc">Tarih: yeni</option>
+        </select>
+      </div>
+    </div>
+    <div class="f-foot">
+      <div class="count"><b id="c-n">—</b> ilan gösteriliyor</div>
+      <button class="btn" id="f-reset">Filtreleri sıfırla</button>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer id="iletisim">
+  <div class="wrap">
+    <div class="f-wrap">
+      <div class="f-brand">
+        <img id="logo-footer" alt="trio.">
+        <p>Ayvalık ve çevresinde yatırım, satın alma ve danışmanlık hizmetleri.
+           Size en uygun mülkü birlikte değerlendiriyoruz.</p>
+      </div>
+      <div class="f-info">
+        <div><b>Ozancan Serhan</b> · Yatırım Uzmanı</div>
+        <div><a href="tel:+905333786894">+90 533 378 68 94</a></div>
+        <div><a href="https://trioemlak.com">trioemlak.com</a></div>
+        <div>Ayvalık, Balıkesir</div>
+      </div>
+    </div>
+    <div class="legal">
+      Bu sunumdaki ilan bilgileri sahibinden.com üzerinde yayınlanan ilanlardan
+      derlenmiştir ve bilgilendirme amaçlıdır. Fiyatlar ve mülk durumu haberleşme
+      anındaki gibidir, güncel durum için bizimle iletişime geçiniz.
+    </div>
+  </div>
+</footer>
+
+<div class="modal" id="detail-modal" aria-hidden="true">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="dm-title">
+    <button class="modal-close" data-close aria-label="Kapat">&times;</button>
+    <div class="modal-photo" id="dm-photo"></div>
+    <div class="modal-body">
+      <div class="dm-title" id="dm-title"></div>
+      <div id="dm-code-wrap" style="display:flex;gap:10px;align-items:center;margin-top:6px;margin-bottom:4px;flex-wrap:wrap;">
+        <span id="dm-code" style="font-size:13px;font-weight:600;color:#C6202A;background:#fdf2f2;padding:3px 10px;border-radius:20px;border:1px solid #f0d6d6;letter-spacing:0.02em;"></span>
+        <span id="dm-url" style="font-size:12.5px;color:#9a9a9a;"></span>
+      </div>
+      <div class="dm-price" id="dm-price"></div>
+      <div class="dm-specs" id="dm-specs"></div>
+      <div class="dm-meta" id="dm-meta"></div>
+      <div class="dm-office" id="dm-office"></div>
+      <a class="dm-cta" href="tel:+90533376894">Detaylı bilgi için arayın</a>
+    </div>
+  </div>
+</div>
+
+<script id="deck-data" type="application/json">
+/*__DECK_DATA__*/null
+</script>
+
+<script>
+(function(){
+  "use strict";
+  var PAYLOAD = JSON.parse(document.getElementById('deck-data').textContent);
+  var DATA = PAYLOAD.listings;
+  var PHOTOS = PAYLOAD.photos || {};
+  var LOGOS = PAYLOAD.logos || {};
+
+  function TL(n){ return n.toLocaleString('tr-TR'); }
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  function el(id){ return document.getElementById(id); }
+
+  // logos
+  if (LOGOS.lockup) {
+    ['logo-header','logo-footer'].forEach(function(id){
+      el(id).src = 'data:image/png;base64,' + LOGOS.lockup;
+    });
+  }
+
+  function initFilters(){
+    var rooms = [];
+    DATA.forEach(function(d){ if(d.rooms && rooms.indexOf(d.rooms)===-1) rooms.push(d.rooms); });
+    rooms.sort();
+    var rs = el('f-rooms');
+    rooms.forEach(function(v){
+      var o = document.createElement('option'); o.value=v; o.textContent=v; rs.appendChild(o);
+    });
+
+    var m2s = [];
+    DATA.forEach(function(d){ if(d.m2 && m2s.indexOf(d.m2)===-1) m2s.push(d.m2); });
+    m2s.sort(function(a,b){return a-b;});
+    var ms = el('f-m2');
+    m2s.forEach(function(v){
+      var o = document.createElement('option'); o.value=v; o.textContent=v+' m² ve üzeri'; ms.appendChild(o);
+    });
+
+    var prices = DATA.map(function(d){return d.price;}).filter(Boolean);
+    var lo = Math.min.apply(null,prices), hi = Math.max.apply(null,prices);
+    var step = 100000;
+    var pr = el('f-price');
+    pr.min = Math.floor(lo/step)*step; pr.max = Math.ceil(hi/step)*step; pr.step = step;
+    pr.value = pr.max;
+
+    ['f-price','f-rooms','f-m2','f-sort','f-sale','f-type','f-neigh'].forEach(function(id){
+      el(id).addEventListener('input', apply);
+    });
+    el('f-reset').addEventListener('click', function(){
+      el('f-price').value = pr.max;
+      el('f-rooms').value = '';
+      el('f-m2').value = '';
+      el('f-sale').value = '';
+      el('f-type').value = '';
+      el('f-neigh').value = '';
+      el('f-sort').value = 'price-asc';
+      apply();
+    });
+
+        // Neighborhood options
+    var neighborhoods = [];
+    DATA.forEach(function(d){
+      var n = (d.location || '').trim();
+      if(n && neighborhoods.indexOf(n) === -1) neighborhoods.push(n);
+    });
+    neighborhoods.sort();
+    var nf = el('f-neigh');
+    neighborhoods.forEach(function(v){
+      var o = document.createElement('option'); o.value = v; o.textContent = v; nf.appendChild(o);
+    });
+
+    var m2all = DATA.map(function(d){return d.m2;}).filter(Boolean);
+    el('m-total').textContent = DATA.length;
+    el('m-min').textContent = TL(Math.min.apply(null,prices));
+    el('m-m2').textContent = Math.min.apply(null,m2all)+'–'+Math.max.apply(null,m2all);
+  }
+
+  function apply(){
+    var maxP = +el('f-price').value;
+    var rooms = el('f-rooms').value;
+    var minM2 = +el('f-m2').value || 0;
+    var sort = el('f-sort').value;
+    el('f-price-v').textContent = TL(maxP);
+
+    var saleFilter = el('f-sale').value;
+    var typeFilter = el('f-type').value;
+    var neighFilter = el('f-neigh').value;
+
+    function deriveSale(title){
+      if(!title) return '';
+      var t = String(title).toLowerCase();
+      if(t.indexOf('kiralık') > -1 || t.indexOf('kiralik') > -1 || t.indexOf('kira') > -1) return 'Kiralık';
+      if(t.indexOf('satılık') > -1 || t.indexOf('satilik') > -1 || t.indexOf('satilik') > -1) return 'Satılık';
+      return '';
+    }
+    function deriveType(title){
+      if(!title) return '';
+      var t = String(title).toLowerCase();
+      if(t.indexOf('villa') > -1) return 'Villa';
+      if(t.indexOf('ofis') > -1 || t.indexOf('büro') > -1) return 'Ofis / Büro';
+      if(t.indexOf('müstakil') > -1 || (t.indexOf('ev') > -1 && t.indexOf('daire') === -1)) return 'Müstakil / Ev';
+      if(t.indexOf('daire') > -1) return 'Daire';
+      return '';
+    }
+    var rows = DATA.filter(function(d){
+      var ok = (!d.price || d.price <= maxP) &&
+             (!rooms || d.rooms === rooms) &&
+             (!minM2 || (d.m2||0) >= minM2);
+      if(!ok) return false;
+      if(saleFilter) {
+        var sale = deriveSale(d.title);
+        if(sale !== saleFilter) return false;
+      }
+      if(typeFilter) {
+        var t = deriveType(d.title);
+        if(t !== typeFilter) return false;
+      }
+      if(neighFilter) {
+        var loc = String(d.location || d.title || '').toLowerCase();
+        // Normalize neighborhood match: check if filter value appears in location
+        var nf = neighFilter.toLowerCase();
+        if(loc.indexOf(nf) === -1) return false;
+      }
+      return true;
+    });
+
+    var cmp = {
+      'price-asc':  function(a,b){return (a.price||0)-(b.price||0);},
+      'price-desc': function(a,b){return (b.price||0)-(a.price||0);},
+      'm2-desc':    function(a,b){return (b.m2||0)-(a.m2||0);},
+      'm2-asc':     function(a,b){return (a.m2||0)-(b.m2||0);},
+      'date-desc':  function(a,b){return new Date(b.date)-new Date(a.date);}
+    }[sort];
+    rows.sort(cmp);
+
+    el('c-n').textContent = rows.length;
+    render(rows);
+  }
+
+  function render(rows){
+    var g = el('grid');
+    if(!rows.length){
+      g.innerHTML = '<div class="empty"><b>Kriterlere uygun ilan yok</b>'+
+        'Filtreleri gevşetmeyi deneyin veya bizimle iletişime geçin.</div>';
+      return;
+    }
+    g.innerHTML = rows.map(function(d){
+      var b64arr = PHOTOS[d.id];
+      var photoCount = (b64arr && b64arr.length) || 0;
+      var photo = (b64arr && b64arr.length)
+        ? '<img src="'+(Array.isArray(b64arr[0]) ? b64arr[0][0] : (b64arr[0].indexOf('/')===0 || b64arr[0].indexOf('http')===0 ? b64arr[0] : '/images_branded/'+b64arr[0]))+'" alt="'+esc(d.title)+'" >'
+        : '<div class="ph">Fotoğraf yok</div>';
+      var counter = photoCount > 1
+        ? '<span class="thumb-nav">1/'+photoCount+'</span>'
+        : '';
+      return '<div class="card" data-id="'+esc(d.id)+'" role="button" tabindex="0" aria-label="'+esc(d.title)+' detaylarını gör">'+
+        '<div class="thumb">'+photo+counter+'<span class="tag">'+esc(d.rooms||'—')+'</span></div>'+
+        '<div class="body">'+
+          '<div class="title">'+esc(d.title)+'</div>'+
+          '<div class="price">'+esc(d.price_text||'Fiyat sorunuz')+'</div>'+'<div class="code-tag">'+esc(d.code||d.id||'')+'</div>'+
+          '<div class="specs">'+
+            (d.m2?'<span class="chip">'+d.m2+' m²</span>':'')+
+            (d.rooms?'<span class="chip">'+esc(d.rooms)+'</span>':'')+
+            (d.location?'<span class="chip">'+esc(d.location)+'</span>':'')+
+          '</div>'+
+          '<div class="foot"><span>'+esc(d.date||'')+'</span><span>'+esc(d.location||'')+'</span></div>'+
+        '</div>';
+    }).join('');
+  }
+
+  // ── detail modal (çoklu fotoğraf galerisi) ──
+  var galleryState = { photos: [], current: 0, listingId: null };
+
+  function updateGalleryPhoto() {
+    var photos = galleryState.photos;
+    var idx = galleryState.current;
+    var container = el('dm-photo');
+    if (photos.length === 0) {
+      container.innerHTML = '<div class="ph">Fotoğraf yok</div>';
+      return;
+    }
+    var imgSrc = (typeof photos[idx] === 'string' && photos[idx].indexOf('http') === -1 && photos[idx].indexOf('/') === 0)
+      ? photos[idx]
+      : ((Array.isArray(photos[idx]) ? photos[idx][0] : photos[idx]) || '');
+    var img = '<img src="' + imgSrc + '" alt="Fotoğraf">';
+    var nav = '';
+    if (photos.length > 1) {
+      var prevIdx = (idx - 1 + photos.length) % photos.length;
+      var nextIdx = (idx + 1) % photos.length;
+      nav = '<button class="gallery-arrow prev" data-goto="' + prevIdx + '">&#8249;</button>' +
+            '<button class="gallery-arrow next" data-goto="' + nextIdx + '">&#8250;</button>';
+      var dots = '<div class="gallery-nav">' + photos.map(function(_, i) {
+        return '<span class="gallery-dot' + (i === idx ? ' active' : '') + '" data-goto="' + i + '"></span>';
+      }).join('') + '</div>';
+      nav += dots;
+    }
+    container.innerHTML = img + nav;
+    // wire up gallery controls
+    container.querySelectorAll('[data-goto]').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        galleryState.current = parseInt(btn.getAttribute('data-goto'));
+        updateGalleryPhoto();
+      });
+    });
+  }
+
+  function openDetail(id){
+    var d = null;
+    for (var i=0;i<DATA.length;i++){ if(DATA[i].id===id){ d=DATA[i]; break; } }
+    if(!d) return;
+
+    galleryState.photos = PHOTOS[d.id] || [];
+    galleryState.current = 0;
+    galleryState.listingId = id;
+    updateGalleryPhoto();
+
+    el('dm-title').textContent = d.title || '';
+    el('dm-price').textContent = d.price_text || 'Fiyat sorunuz';
+    var specs = [];
+    if(d.m2) specs.push(d.m2+' m²');
+    if(d.rooms) specs.push(d.rooms);
+    if(d.location) specs.push(d.location);
+    el('dm-code').textContent = d.code || d.id || '';
+    el('dm-url').innerHTML = d.url ? '<a href="'+esc(d.url)+'" target="_blank" rel="noopener">Sahibinden.com linki</a>' : '';
+    el('dm-specs').innerHTML = specs.map(function(s){return '<span class="chip">'+esc(s)+'</span>';}).join('');
+    el('dm-meta').textContent = d.date || '';
+    var office = [];
+    if(d.seller_name) office.push('<b>'+esc(d.seller_name)+'</b>');
+    if(d.seller_phone) office.push(esc(d.seller_phone));
+    el('dm-office').innerHTML = office.join(' · ') || 'Trio Emlak · Danışmanlık';
+    var m = el('detail-modal');
+    m.classList.add('open');
+    m.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDetail(){
+    var m = el('detail-modal');
+    m.classList.remove('open');
+    m.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
+  el('grid').addEventListener('click', function(e){
+    var card = e.target && e.target.closest ? e.target.closest('.card') : null;
+    if(card && card.getAttribute('data-id')) openDetail(card.getAttribute('data-id'));
+  });
+  el('grid').addEventListener('keydown', function(e){
+    if(e.key==='Enter' || e.key===' '){
+      var card = e.target && e.target.closest ? e.target.closest('.card') : null;
+      if(card && card.getAttribute('data-id')){ e.preventDefault(); openDetail(card.getAttribute('data-id')); }
+    }
+  });
+  document.querySelectorAll('#detail-modal [data-close]').forEach(function(b){ b.addEventListener('click', closeDetail); });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape') closeDetail();
+    if(galleryState.photos.length > 1) {
+      if(e.key==='ArrowLeft') { galleryState.current = (galleryState.current - 1 + galleryState.photos.length) % galleryState.photos.length; updateGalleryPhoto(); }
+      if(e.key==='ArrowRight') { galleryState.current = (galleryState.current + 1) % galleryState.photos.length; updateGalleryPhoto(); }
+    }
+  });
+
+  initFilters();
+  apply();
+})();
+</script>
+</body>
+</html>

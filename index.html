@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRIO PRIME - Ayvalık Emlak İlanları</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --background: #f8f9fa;
+            --text: #2c3e50;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--background); color: var(--text); line-height: 1.6; }
+        .hero { background: var(--primary); color: white; padding: 2rem; text-align: center; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .hero p { opacity: 0.9; font-size: 1.1rem; }
+        .filters { background: white; padding: 1.5rem; margin: 2rem auto; max-width: 1200px; }
+        .filters div { margin-bottom: 1rem; }
+        .filters label { font-weight: bold; display: block; margin-bottom: 0.5rem; }
+        .filters select, .filters input { padding: 0.5rem; width: 100%; max-width: 300px; }
+        .filters select { cursor: pointer; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; max-width: 1200px; padding: 0 1rem; margin: 0 auto; }
+        .card { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); overflow: hidden; transition: transform 0.2s; }
+        .card:hover { transform: translateY(-2px); }
+        .card-img { width: 100%; height: 180px; object-fit: cover; background: #ddd; }
+        .card-content { padding: 1rem; }
+        .card-price { font-weight: bold; color: var(--primary); font-size: 1.2rem; }
+        .card-meta { font-size: 0.8rem; color: #666; margin-top: 0.5rem; }
+        .empty { text-align: center; padding: 3rem; color: #666; display: none; }
+        #cnt-top { color: var(--primary); font-weight: bold; margin: 1rem 0; }
+        @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <section class="hero" aria-label="Başlık">
+        <h1>TRIO PRIME</h1>
+        <p class="sub">Trio Emlak · Özancan Serhan · <strong>0533 378 68 94</strong> · Sıfır Halüsinasyon</p>
+        <p class="sub" style="margin-top:.6rem;color:#a8a08a">Ayvalık · Cunda · Altınova · Gömeç · İstanbul</p>
+    </section>
+
+    <div class="dashboard-tabs" aria-label="Dashboard tabs">
+        <button class="tab-btn active" onclick="showTab('listings')">İlanlar <span id="listings-count" style="color: var(--accent); font-weight: bold; margin-left: 4px;">1239</span></button>
+        <button class="tab-btn" onclick="showTab('customers')">Müşteriler <span id="customers-count" style="color: var(--accent); font-weight: bold; margin-left: 4px;">0</span></button>
+        <button class="tab-btn" onclick="showTab('tasks')">Görevler <span id="tasks-count" style="color: var(--accent); font-weight: bold; margin-left: 4px;">0</span></button>
+    </div>
+
+    <!-- Deployment version & cache info -->
+    <div id="deployment-info" style="position:fixed; bottom:10px; left:10px; padding:8px 12px; background:#e3f2fd; border-radius:4px; font-size:0.75em; color:#1565c0; z-index:9999; border:1px solid #90caf9;">
+        🏠 TRIO CRM v199-limitfix | 1239 listings | <span id="deploy-timestamp"></span>
+    </div>
+    <div id="cache-info" style="position:fixed; bottom:10px; right:10px; padding:8px 12px; background:#fff3e0; border-radius:4px; font-size:0.75em; color:#e65100; z-index:9999; border:1px solid #ffe0b2; display:none;">
+        🗂️ Cloudflare propagation intermittent. <b>Ctrl+F5</b> veya yeni sekme: <a href="https://7963a2c8.trio-crm-staging.pages.dev" target="_blank">https://7963a2c8.trio-crm-staging.pages.dev</a>
+    </div>
+    <!-- Force refresh button -->
+    <div id="refresh-btn" style="position:fixed; bottom:10px; right:140px; padding:6px 12px; background:#90caf9; border-radius:4px; font-size:0.75em; color:#1565c0; z-index:9999; cursor:pointer; border:1px solid #64b5f6; display:none;">
+        🔄 Cloudflare'ı Yenile
+    </div>
+
+    <script>
+    // Deployment info initialization
+    document.getElementById('deploy-timestamp').textContent = new Date().toLocaleString('tr-TR');
+    
+    // Show cache info only on staging URLs (not production)
+    const hostname = window.location.hostname;
+    const isStaging = hostname.includes('trio-crm-staging');
+    if (isStaging) {
+        document.getElementById('cache-info').style.display = 'block';
+        document.getElementById('refresh-btn').style.display = 'block';
+    }
+    
+    // Force refresh button handler
+    document.getElementById('refresh-btn').addEventListener('click', () => {
+        if (confirm('Tarayıcı önbelleğini temizleyip sayfayı yenilemek istiyor musunuz?\n\n• Ctrl+F5 basarak güçlü yenileme yapabilirsiniz\n• Veya aşağıdaki alternative URL\'leri deneyebilirsiniz\n• Cloudflare propagation genellikle 1-5 dakika içinde tamamlanır', () => {
+            // Open alternative URL in new tab
+            const altUrls = [
+                'https://7963a2c8.trio-crm-staging.pages.dev',
+                'https://bcd4e1c2.trio-crm-staging.pages.dev', 
+                'https://397bbf05.trio-crm-staging.pages.dev'
+            ];
+            const randomUrl = altUrls[Math.floor(Math.random() * altUrls.length)];
+            window.open(randomUrl, '_blank');
+            // Also suggest Ctrl+F5
+            alert('Önerilen: Tarayıcıyı Ctrl+F5 ile temizle ve sayfayı yeniden yükleyin.');
+        });
+    });
+    </script>
+
+    <div class="filters" aria-label="Filtreler">
+        <div><label for="f-mah">Mahalle</label>
+            <select id="f-mah" onchange="apply()">
+                <option>Tümü</option>
+    <option>150 Evler Mah.</option><option>Ada</option><option>Akin</option><option>Akçapınar Mh.</option><option>Ali Çetinkaya Mh.</option><option>Alibey Namık Kemal Mh.</option><option>Altin</option><option>Altınova Altınova Mh.</option><option>Altınova Mh.</option><option>Artvi̇n</option><option>Aylin</option><option>Ayli̇n</option><option>Ayvalik Ada</option><option>Ayvalik Coşkun</option><option>Ayvalik Konak</option><option>Ayvalik Özcan</option><option>Ayvalık Özkayaoğulları</option><option>Bağyüzü Mh.</option><option>Beşiktepe Mh.</option><option>Bulutçeşme Mh.</option><option>Burçin</option><option>Burçi̇n</option><option>Coşkun</option><option>Doğuş</option><option>Erdi̇n</option><option>Fethiye Mah.</option><option>Hacıveliler Mh.</option><option>Hamdibey Mah.</option><option>Jet</option><option>Karaayıt Mh.</option><option>Kozak</option><option>Küçükköy Küçükköy Mh.</option><option>Küçükköy Mh.</option><option>Merkez 150 Evler Mah.</option><option>Merkez Ali Çetinkaya Mh.</option><option>Merkez Fevzipaşa - Vehbibey Mh.</option><option>Merkez Gazi Kemal Paşa Mh.</option><option>Merkez Hayrettinpaşa Mh.</option><option>Merkez Kazım Karabekir Mh.</option><option>Merkez Sahil Kent Mah.</option><option>Merkez Sakarya Mah.</option><option>Merkez Sefa Çamlık Mh.</option><option>Merkez Yeni Mah.</option><option>Merkez Zekibey Mah.</option><option>Mithatpaşa Mh.</option><option>Murateli Mh.</option><option>Muğla Fethiye</option><option>Mümi̇n</option><option>Namık Kemal Mh.</option><option>Odaburnu Mh.</option><option>Platform</option><option>S&S</option><option>Sakarya Adapazarı</option><option>Sakarya Arifiye</option><option>Sakarya Karasu</option><option>Sakarya Kocaali</option><option>Sakarya Mah.</option><option>Tıfıllar Mh.</option><option>Varol</option><option>Yazlik</option><option>Yazlık</option><option>Yeniköy Mh.</option><option>Çakmak Mh.</option><option>Çamoba Mh.</option><option>Çanakkale Lapseki</option><option>Örs</option><option>Özkayaoğulları</option><option>Üçkabaağaç Mh.</option><option>İsmetpaşa Mh.</option><option>İstanbul</option></select></div>
+        <div><label for="f-oda">Oda</label>
+            <select id="f-oda" onchange="apply()">
+                <option>Tümü</option>
+                <option>1+1</option>
+                <option>2+1</option>
+                <option>3+1</option>
+                <option>4+1</option>
+                <option>5+1</option>
+            </select></div>
+        <div><label for="f-store">Emlak Ofisi</label>
+            <select <div class="filters" aria-label="Filtreler">
+        <div><label for="f-mah">Mahalle</label>
+            <select id="f-mah" onchange="apply()">
+                <option>Tümü</option></select></div>
+
+        <div><label for="f-oda">Oda</label>
+            <select id="f-oda" onchange="apply()">
+                <option>Tümü</option>
+                <option>1+1</option>
+                <option>2+1</option>
+                <option>3+1</option>
+                <option>4+1</option>
+                <option>5+1</option>
+            </select></div><div><label for="f-kaynaklar">Tüm Kaynaklar</label>
+            <select id="f-kaynaklar" onchange="apply()">
+                <option>Tümü</option>
+                <option>Trio Portföyü</option>
+                <option>Sahibinden</option><option>150 Evler Mah.</option><option>Bulutçeşme Mh.</option><option>Muğla Fethiye</option><option>Sakarya Arifiye</option><option>Sakarya Karasu</option><option>Sakarya Mah.</option><option>Çanakkale Lapseki</option></select></div><div><label for="f-fiyat">Maks. Fiyat (TL)</label>
+            <input id="f-fiyat" type="number" placeholder="Örn. 10000000" oninput="apply()"></div>
+        <div><label for="f-m2">Min. m²</label>
+            <input id="f-m2" type="number" oninput="apply()"></div>function apply() {
+            const mah = document.getElementById('f-mah').value;
+            const oda = document.getElementById('f-oda').value;
+            const kaynak = document.getElementById('f-kaynaklar').value;
+            const fMax = parseInt(document.getElementById('f-fiyat').value) || Infinity;
+            const m2Min = parseInt(document.getElementById('f-m2').value) || 0;
+            
+            // Known emlak ofisleri mahalle names (70 mahalle)
+            const emlakOfisiMahalleri = ["150 Evler Mah.", "Ada",
+            
+            // Source filter: sadece "Tümü" veya doğrudan sahibinden olanları göster
+            // Bu, listings.json'daki source field'i (1223 sahibinden + 16 mahalle) kullanır
+            function isSahibinden(c) {
+                return c.source && (c.source === 'sahibinden' || emlakOfisiMahalleri.includes(c.store || ''));
+            } "Akin", "Akçapınar Mh.", "Ali Çetinkaya Mh.", "Alibey Namık Kemal Mh.", "Altin", "Altınova Altınova Mh.", "Altınova Mh.", "Artvi̇n", "Aylin", "Ayli̇n", "Ayvalik Ada", "Ayvalik Coşkun", "Ayvalik Konak", "Ayvalik Özcan", "Ayvalık Özkayaoğulları", "Bağyüzü Mh.", "Beşiktepe Mh.", "Bulutçeşme Mh.", "Burçin", "Burçi̇n", "Coşkun", "Doğuş", "Erdi̇n", "Fethiye Mah.", "Hacıveliler Mh.", "Hamdibey Mah.", "Jet", "Karaayıt Mh.", "Kozak", "Küçükköy Küçükköy Mh.", "Küçükköy Mh.", "Merkez 150 Evler Mah.", "Merkez Ali Çetinkaya Mh.", "Merkez Fevzipaşa - Vehbibey Mh.", "Merkez Gazi Kemal Paşa Mh.", "Merkez Hayrettinpaşa Mh.", "Merkez Kazım Karabekir Mh.", "Merkez Sahil Kent Mah.", "Merkez Sakarya Mah.", "Merkez Sefa Çamlık Mh.", "Merkez Yeni Mah.", "Merkez Zekibey Mah.", "Mithatpaşa Mh.", "Murateli Mh.", "Muğla Fethiye", "Mümi̇n", "Namık Kemal Mh.", "Odaburnu Mh.", "Platform", "S&S", "Sakarya Adapazarı", "Sakarya Arifiye", "Sakarya Karasu", "Sakarya Kocaali", "Sakarya Mah.", "Tıfıllar Mh.", "Varol", "Yazlik", "Yazlık", "Yeniköy Mh.", "Çakmak Mh.", "Çamoba Mh.", "Çanakkale Lapseki", "Örs", "Özkayaoğulları", "Üçkabaağaç Mh.", "İsmetpaşa Mh.", "İstanbul"];
+            
+            // Helper: check if store indicates emlak ofisi
+            function isEmlakOfisi(c) {
+                return emlakOfisiMahalleri.includes(c.store || '');
+            }
+            
+            // Helper: check if URL is sahibinden
+            function isSahibindenUrl(c) {
+                return c.url && c.url.includes('sahibinden.com');
+            }
+            
+            const out = DATA.filter(c => {
+                // Mahalle filter
+                const mahMatch = (mah === 'Tümü' || c.loc === mah);
+                
+                // Oda filter
+                const odaMatch = (oda === 'Tümü' || c.oda === oda);
+                
+                // Kaynak (Tüm Kaynaklar) filter
+                let kaynakMatch;
+                // Kaynak filter: "Tümü" seçiliyse tüm listing'leri göster,
+                // aksi halde listings.json'daki source field'i kullan
+                kaynakMatch = (kaynak === 'Tümü' || c.source === 'sahibinden') && ...;
+                if (kaynak === 'Tümü') {
+                    kaynakMatch = true;
+                } else if (kaynak === 'Trio Portföyü') {
+                    // Trio portföyü: not from sahibinden AND not from emlak ofisi
+                    const urlIsSahibinden = isSahibindenUrl(c);
+                    const isOffice = isEmlakOfisi(c);
+                    const isTrioPortfoy = !urlIsSahibinden && !isOffice;
+                    kaynakMatch = isTrioPortfoy;
+                } else if (kaynak === 'Sahibinden') {
+                    // Sadece doğrudan sahibinden (satıcıdan/y Kira yıcısından) ilanlar
+                    const urlIsSahibinden = isSahibindenUrl(c);
+                    const isOffice = isEmlakOfisi(c);
+                    // Direct: sahibinden URL BUT not from emlak ofisi (store indicates office)
+                    const isDirect = urlIsSahibinden && !isOffice;
+                    // Also check title for direct indicators
+                    const title = c.title || '';
+                    const hasDirectIndicators = title.includes('sahibinden ') || title.includes('satıcı') || title.includes('karalayan') || title.includes('owner');
+                    const isDirectByTitle = hasDirectIndicators && urlIsSahibinden;
+                    kaynakMatch = isDirect || isDirectByTitle;
+                } else {
+                    // Diğer emlak ofisi filtresi - store matching
+                    // Kullanıcının istediği: "Herhangi emlak ofisinden olmayan ilanlar"
+                    // Yani: store NOT in the emlak ofisi list → show
+                    const isNotOffice = !isEmlakOfisi(c);
+                    kaynakMatch = isNotOffice;
+                }
+                
+                // Fiyat filter
+                const fiyatMatch = (c.pv ?? Infinity) <= fMax;
+                
+                // m2 filter
+                const m2Match = (parseInt(c.m2) || 0) >= m2Min;
+                
+                return mahMatch && odaMatch && kaynakMatch && fiyatMatch && m2Match;
+            });)
+                .then(data => {
+                    DATA = data;
+                    apply();
+                })
+                .catch(error => console.error('Failed to load listings.json:', error));
+        });
+
+        function apply() {
+            const mah = document.getElementById('f-mah').value;
+            const oda = document.getElementById('f-oda').value;
+            const store = document.getElementById('f-store').value;
+            const fMax = parseInt(document.getElementById('f-fiyat').value) || Infinity;
+            const m2Min = parseInt(document.getElementById('f-m2').value) || 0;
+            
+            const out = DATA.filter(c =>
+                (mah === 'Tümü' || c.loc === mah) &&
+                (oda === 'Tümü' || c.oda === oda) &&
+                (store === 'Tümü' || c.store === store) &&
+                (c.pv ?? Infinity) <= fMax &&
+                (parseInt(c.m2) || 0) >= m2Min
+            );
+            
+            // Render listings
+            const grid = document.getElementById('grid');
+            if (out.length === 0) {
+                grid.innerHTML = '';
+                document.getElementById('empty').style.display = 'block';
+            } else {
+                grid.innerHTML = out.map(card => `
+                    <div class="card">
+                        <img class="card-img" src="${c.image || 'https://via.placeholder.com/300x180'}" alt="${c.title}">
+                        <div class="card-content">
+                            <h3 style="font-size:1.1rem; margin-bottom:0.5rem;">${c.title}</h3>
+                            <div class="card-price">${c.price_text || '${c.price.toLocaleString()} TL'}</div>
+                            <div class="card-meta">${c.rooms || ''} | ${c.m2 || ''} m² | ${c.loc || ''}</div>
+                        </div>
+                    </div>
+                `).join('');
+                document.getElementById('empty').style.display = 'none';
+            }
+            
+            // Update count display
+            document.getElementById('cnt-top').textContent = out.length + ' / ' + DATA.length;
+                </script>
+
+                                <!-- Dashboard Tabs Content -->
+                                <div class="dashboard-tabs-content">
+                                    <!-- Listings tab -->
+                                    <div id="tab-listings" class="tab-panel active">
+                                        <!-- Filters already above -->
+                                        <div class="grid" id="grid"></div>
+                                        <div id="empty" style="display: none; text-align: center; padding: 3rem; color: #666;">İlan bulunamadı</div>
+                                        <div id="cnt-top" style="color: var(--primary); font-weight: bold; margin: 1rem 0;"></div>
+                                    </div>
+
+                                    <!-- Customers tab -->
+                                                        <div id="tab-customers" class="tab-panel">
+                                                            <h3 style="margin: 0 0 1rem 0; color: var(--primary);">Müşteri Takibi</h3>
+                                                            <table class="customer-table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Müşteri</th>
+                                                                        <th>Telefon</th>
+                                                                        <th>E-posta</th>
+                                                                        <th>Firma</th>
+                                                                        <th>Takip Tarihi</th>
+                                                                        <th>Durum</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="customer-tbody">
+                                                                    <!-- Customer rows dynamically added -->
+                                                                </tbody>
+                                                            </table>
+                                                            <div style="margin: 1rem 0;">
+                                                                <button class="btn-small" onclick="addCustomer()">Müşteri Ekle</button>
+                                                            </div>
+                                                        </div>
+
+                                    <!-- Tasks tab -->
+                                                        <div id="tab-tasks" class="tab-panel">
+                                                            <h3 style="margin: 0 0 1rem 0; color: var(--primary);">Görev Takibi</h3>
+                                                            <table class="task-table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Başlık</th>
+                                                                        <th>Müşteri</th>
+                                                                        <th>Tarih</th>
+                                                                        <th>Öncelik</th>
+                                                                        <th>Durum</th>
+                                                                        <th>İlan</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="task-tbody">
+                                                                    <!-- Task rows dynamically added -->
+                                                                </tbody>
+                                                            </table>
+                                                            <div style="margin: 1rem 0;">
+                                                                <button class="btn-small" onclick="addTask()">Yeni Görev Ekle</button>
+                                                            </div>
+                                                        </div>
+                                </div>
+
+                                <!-- Tab persistence & count indicators -->
+                                <script>
+                                // Tab persistence: remember last active tab via localStorage
+                                function showTab(name, buttonElement) {
+                                    // Save active tab to localStorage
+                                    localStorage.setItem('activeTab', name);
+                    
+                                    // Hide all tab panels
+                                    document.querySelectorAll('.tab-panel').forEach(panel => {
+                                        panel.classList.remove('active');
+                                    });
+                                    // Show selected tab panel
+                                    const panel = document.getElementById('tab-' + name);
+                                    if (panel) panel.classList.add('active');
+                    
+                                    // Update active button style
+                                    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                                    if (buttonElement) buttonElement.classList.add('active');
+                                }
+                
+                                // On page load, restore previously active tab (default to listings)
+                                window.addEventListener('load', () => {
+                                    const savedTab = localStorage.getItem('activeTab');
+                                    if (savedTab) {
+                                        showTab(savedTab);
+                                    } else {
+                                        // Default: show listings tab on first load
+                                        showTab('listings');
+                                    }
+                    
+                                    // Initialize tab counts from DATA
+                                    const tabCounts = {
+                                        listings: DATA.length,
+                                        customers: document.querySelectorAll('#customer-tbody tr').length,
+                                        tasks: document.querySelectorAll('#task-tbody tr').length
+                                    };
+                    
+                                    // Update count indicators
+                                    document.getElementById('listings-count')?.textContent = tabCounts.listings;
+                                    document.getElementById('customers-count')?.textContent = tabCounts.customers;
+                                    document.getElementById('tasks-count')?.textContent = tabCounts.tasks;
+                                });
+                                </script>
+
+            </body>
+</html>
